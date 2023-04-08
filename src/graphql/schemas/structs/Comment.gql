@@ -1,0 +1,11 @@
+type Comment {
+  uuid: String!
+  userUuid: String!
+  mediaUuid: String!
+  content: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+  commentActions: [CommentAction!]!
+  mediaComments: [MediaComment!]!
+}

@@ -1,0 +1,21 @@
+type Media {
+  uuid: String!
+  postUuid: String!
+  parentMediaUuid: String
+  filename: String!
+  width: Int!
+  height: Int!
+  ratio: Float!
+  s3Key: String!
+  s3Bucket: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  post: Post!
+  parentMedia: Media
+  childMedias: [Media!]!
+  evaluations: [MediaEvaluation!]!
+  actions: [MediaAction!]!
+  mediaTags: [MediaTag!]!
+  favorites: [Favorite!]!
+  comments: [MediaComment!]!
+}

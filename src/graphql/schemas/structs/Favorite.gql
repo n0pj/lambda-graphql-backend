@@ -1,10 +1,9 @@
-type Post {
+type Favorite {
   uuid: String!
   userUuid: String!
-  title: String
-  content: String
+  mediaUuid: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  media: [Media!]!
   user: User!
+  media: Media!
 }

@@ -1,10 +1,10 @@
-type Post {
+type Tag {
   uuid: String!
+  name: String!
   userUuid: String!
-  title: String
-  content: String
   createdAt: DateTime!
   updatedAt: DateTime!
-  media: [Media!]!
+  mediaTags: [MediaTag!]!
+  tagEvaluations: [TagEvaluation!]!
   user: User!
 }

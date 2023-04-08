@@ -1,0 +1,10 @@
+type MediaTag {
+  uuid: String!
+  mediaUuid: String!
+  tagUuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  media: Media!
+  tag: Tag!
+  tagEvaluations: [TagEvaluation!]!
+}

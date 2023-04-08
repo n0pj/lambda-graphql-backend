@@ -1,0 +1,9 @@
+type MediaAction {
+  uuid: String!
+  mediaUuid: String!
+  actionUuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  media: Media!
+  action: Action!
+}

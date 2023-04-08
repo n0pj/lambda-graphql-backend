@@ -1,0 +1,28 @@
+#
+mutation CreateMedia(
+  $file: Upload!
+  $filename: String!
+  $contentType: String!
+  $width: Int!
+  $height: Int!
+  $ratio: Float!
+) {
+  createMedia(
+    file: $file
+    filename: $filename
+    contentType: $contentType
+    width: $width
+    height: $height
+    ratio: $ratio
+  ) {
+    uuid
+    filename
+    width
+    height
+    ratio
+    s3Key
+    s3Bucket
+    createdAt
+    updatedAt
+  }
+}

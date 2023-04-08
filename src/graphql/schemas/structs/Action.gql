@@ -1,10 +1,10 @@
-type Post {
+type Action {
   uuid: String!
   userUuid: String!
-  title: String
-  content: String
+  type: String!
   createdAt: DateTime!
   updatedAt: DateTime!
-  media: [Media!]!
+  mediaActions: [MediaAction!]!
+  commentAction: [CommentAction!]!
   user: User!
 }

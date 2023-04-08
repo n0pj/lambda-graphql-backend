@@ -1,0 +1,12 @@
+type User {
+  uuid: String!
+  username: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  posts: [Post!]!
+  tags: [Tag!]!
+  evaluations: [Evaluation!]!
+  mediaActions: [Action!]!
+  favorites: [Favorite!]!
+  comments: [Comment!]!
+}

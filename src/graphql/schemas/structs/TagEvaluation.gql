@@ -1,0 +1,10 @@
+type TagEvaluation {
+  uuid: String!
+  tagUuid: String!
+  evaluationUuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  tag: Tag!
+  evaluation: Evaluation!
+  mediaTag: MediaTag
+}

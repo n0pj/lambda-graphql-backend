@@ -1,0 +1,9 @@
+type MediaEvaluation {
+  uuid: String!
+  mediaUuid: String!
+  evaluationUuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  media: Media!
+  evaluation: Evaluation!
+}

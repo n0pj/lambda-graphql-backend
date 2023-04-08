@@ -1,6 +1,26 @@
 type Query {
   """
-  Get all posts
+  特定のユーザーを取得する
   """
-  getPosts: [Post!]!
+  user(uuid: String!): User
+
+  """
+  ポストの一覧を取得する
+  """
+  posts: [Post!]!
+
+  """
+  複数のタグを取得する
+  """
+  tags(uuids: [String!]!): [Tag!]!
+
+  """
+  複数のコメントを取得する
+  """
+  comments(mediaUuid: String!): [Comment!]!
+
+  """
+  特定のメディアを取得する
+  """
+  media(uuid: String!): Media
 }

@@ -1,0 +1,9 @@
+type MediaComment {
+  uuid: String!
+  mediaUuid: String!
+  commentUuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  media: Media!
+  comment: Comment!
+}

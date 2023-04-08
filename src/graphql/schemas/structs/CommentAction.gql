@@ -1,0 +1,9 @@
+type CommentAction {
+  uuid: String!
+  commentUuid: String!
+  actionUuid: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  comment: Comment!
+  action: Action!
+}

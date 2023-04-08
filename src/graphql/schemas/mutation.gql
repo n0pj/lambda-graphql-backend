@@ -1,6 +1,110 @@
 type Mutation {
   """
-  Create a new media
+  新しいユーザーを作成する
   """
-  createMedia: ResMedia!
+  createUser(username: String!): User
+
+  """
+  新しいポストを作成する
+  """
+  createPost(userUuid: String!, title: String, content: String): Post
+
+  """
+  新しいメディアを作成する
+  """
+  createMedia(
+    file: Upload!
+    filename: String!
+    contentType: String!
+    width: Int!
+    height: Int!
+    ratio: Float!
+  ): Media
+
+  """
+  新しいタグを作成する
+  """
+  createTag(name: String!, userUuid: String!): Tag
+
+  """
+  新しいコメントを作成する
+  """
+  createComment(
+    userUuid: String!
+    mediaUuid: String!
+    content: String!
+  ): Comment
+
+  """
+  メディアにタグを追加する
+  """
+  addTagToMedia(
+    mediaUuid: String!
+    tagUuid: String!
+    userUuid: String!
+  ): MediaTag
+
+  """
+  タグの評価を追加する
+  """
+  addEvaluationToTag(
+    tagUuid: String!
+    evaluationUuid: String!
+    userUuid: String!
+  ): TagEvaluation
+
+  """
+  メディアの評価を追加する
+  """
+  addEvaluationToMedia(
+    mediaUuid: String!
+    evaluationUuid: String!
+    userUuid: String!
+  ): MediaEvaluation
+
+  """
+  メディアに対してアクションを追加する
+  """
+  addActionToMedia(
+    mediaUuid: String!
+    actionType: String!
+    userUuid: String!
+  ): MediaAction
+
+  """
+  コメントに対してアクションを追加する
+  """
+  addActionToComment(
+    commentUuid: String!
+    actionType: String!
+    userUuid: String!
+  ): CommentAction
+
+  """
+  メディアをお気に入りに追加する
+  """
+  addMediaToFavorites(mediaUuid: String!, userUuid: String!): Favorite
+
+  """
+  メディアからお気に入りを削除する
+  """
+  removeMediaFromFavorites(favoriteUuid: String!): Favorite
+
+  """
+  メディアのコメントを追加する
+  """
+  addCommentToMedia(
+    mediaUuid: String!
+    userUuid: String!
+    content: String!
+  ): MediaComment
+
+  """
+  コメントのコメントを追加する
+  """
+  addCommentToComment(
+    commentUuid: String!
+    userUuid: String!
+    content: String!
+  ): Comment
 }

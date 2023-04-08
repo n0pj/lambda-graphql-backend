@@ -1,0 +1,10 @@
+type Evaluation {
+  uuid: String!
+  userUuid: String!
+  value: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  mediaEvaluations: [MediaEvaluation!]!
+  tagEvaluations: [TagEvaluation!]!
+  user: User!
+}
