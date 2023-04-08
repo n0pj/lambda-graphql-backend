@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      // "dom", "esnext",
+      // "ES2022"
+    ],
+    "module": "CommonJS",
+    "target": "ES2022",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    // "rootDir": "./src",
+    "paths": {
+      // "src": ["./src"],
+      "@/*": ["src/*"]
+    },
+    "esModuleInterop": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "src/**/*.test.ts"]
+}

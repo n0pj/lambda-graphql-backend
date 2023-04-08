@@ -1,0 +1,7 @@
+type ResMedia {
+  uuid: String!
+  url: String!
+  type: String!
+  createdAt: String!
+  updatedAt: String!
+}

@@ -1,0 +1,14 @@
+{
+  "editor.formatOnSave": true,
+  "editor.inlineSuggest.enabled": true,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "prettier.semi": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "prettier.singleQuote": true,
+
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  }
+}

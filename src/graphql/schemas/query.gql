@@ -1,0 +1,6 @@
+type Query {
+  """
+  Get all posts
+  """
+  getPosts: [Post!]!
+}
