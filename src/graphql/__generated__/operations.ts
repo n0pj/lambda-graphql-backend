@@ -16,6 +16,11 @@ export type CreateMediaMutationVariables = Exact<{
 
 export type CreateMediaMutation = { __typename?: 'Mutation', createMedia?: { __typename?: 'Media', uuid: string, filename: string, width: number, height: number, ratio: number, s3Key: string, s3Bucket: string, createdAt: any, updatedAt: any } | null };
 
+export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PostsQuery = { __typename?: 'Query', posts: Array<{ __typename?: 'Post', uuid: string, content?: string | null }> };
+
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;

@@ -7,58 +7,59 @@ See the License for the specific language governing permissions and limitations 
 */
 import { ApolloServer } from '@apollo/server'
 import { expressMiddleware } from '@apollo/server/express4'
-import { join } from 'path'
+import path, { join } from 'path'
 import { readFileSync } from 'fs'
-import { resolvers } from './graphql/resolvers'
-import express from 'express'
-import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware'
-import cors from 'cors'
-import bodyParser from 'body-parser'
-import log4js from 'log4js'
+import resolvers from './graphql/resolvers/index.js'
+import express from 'express/index.js'
+import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware.js'
+import cors from 'cors/lib/index.js'
+// import log4js from 'log4js/'
 import { Context } from 'types/app'
+// import { graphqlUploadExpress } from 'graphql-upload-minimal'
+import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs'
 
-log4js.configure({
-  appenders: { cheese: { type: 'file', filename: 'backend-api.log' } },
-  categories: { default: { appenders: ['cheese'], level: 'error' } },
-})
+// log4js.configure({
+//   appenders: { cwLogs: { type: '@log4js-node/aws-cloudwatch' } },
+//   categories: { default: { appenders: ['cwLogs'], level: 'info' } },
+// })
 
-const logger = log4js.getLogger('backend-api')
-const path = join(process.cwd(), 'src/graphql/__generated__/schema.gql')
-const typeDefs = readFileSync(path, 'utf8')
+// const logger = log4js.getLogger('backend-api')
+const schemaPath = join(process.cwd(), 'src/graphql/__generated__/schema.gql')
+const typeDefs = readFileSync(schemaPath, 'utf8')
 const server = new ApolloServer<Context>({
   typeDefs,
   resolvers,
+  // logger,
+  csrfPrevention: false,
 })
 const app = express()
 
-server.start().then(() => {
+server.start().then(async () => {
   app.use(
-    cors(),
-    bodyParser.json(),
+    cors({
+      // origin: 'http://localhost:3000',
+    }),
+    express.json(),
     awsServerlessExpressMiddleware.eventContext(),
+    graphqlUploadExpress({
+      maxFileSize: 10000000, // 10 MB
+      maxFiles: 10,
+    }),
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         const jwt = req.headers.authorization
-
+        const body = req.body
+        console.log('body: ', body)
         console.log('jwt: ', jwt)
-
         return { jwt }
       },
-    }),
-    function (req, res, next) {
-      // res.header('Access-Control-Allow-Origin', '*')
-      // res.header('Access-Control-Allow-Headers', '*')
-      next()
-    }
+    })
   )
-})
 
-// server.startInBackgroundHandlingStartupErrorsByLoggingAndFailingAllRequests()
-
-// exports.graphqlHandler = serverlessExpress({ app })
-
-app.listen(3001, function () {
-  logger.trace('App started')
+  app.listen(3001, function() {
+    console.log('App started')
+    // logger.trace('App started')
+  })
 })
 
 // Export the app object. When executing the application local this does nothing. However,

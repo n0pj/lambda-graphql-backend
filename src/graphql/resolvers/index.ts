@@ -1,9 +1,14 @@
-import { PrismaClient } from '@prisma/client'
-import Query from './Query'
+import { PrismaClient } from '@prisma/client/index.js'
+import Query from './Query/index.js'
+import Mutation from './Mutation/index.js'
+import GraphQLUpload from 'graphql-upload/GraphQLUpload.mjs'
 
 const prisma = new PrismaClient()
 
-export const resolvers = {
+const resolvers = {
+  Upload: GraphQLUpload,
   Query,
-  Mutation: {},
+  Mutation,
 }
+
+export default resolvers
