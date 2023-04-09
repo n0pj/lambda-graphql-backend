@@ -165,7 +165,7 @@ export type Mutation = {
   /** 新しいコメントを作成する */
   readonly createComment?: Maybe<Comment>;
   /** 新しいメディアを作成する */
-  readonly createMedia?: Maybe<Media>;
+  readonly createMedia?: Maybe<Post>;
   /** 新しいポストを作成する */
   readonly createPost?: Maybe<Post>;
   /** 新しいタグを作成する */
@@ -628,7 +628,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addMediaToFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationAddMediaToFavoritesArgs, 'mediaUuid' | 'userUuid'>>;
   addTagToMedia?: Resolver<Maybe<ResolversTypes['MediaTag']>, ParentType, ContextType, RequireFields<MutationAddTagToMediaArgs, 'mediaUuid' | 'tagUuid' | 'userUuid'>>;
   createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content' | 'mediaUuid' | 'userUuid'>>;
-  createMedia?: Resolver<Maybe<ResolversTypes['Media']>, ParentType, ContextType, RequireFields<MutationCreateMediaArgs, 'contentType' | 'file' | 'filename' | 'height' | 'ratio' | 'width'>>;
+  createMedia?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreateMediaArgs, 'contentType' | 'file' | 'filename' | 'height' | 'ratio' | 'width'>>;
   createPost?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'userUuid'>>;
   createTag?: Resolver<Maybe<ResolversTypes['Tag']>, ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name' | 'userUuid'>>;
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'username'>>;

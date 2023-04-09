@@ -16,13 +16,21 @@ mutation CreateMedia(
     ratio: $ratio
   ) {
     uuid
-    filename
-    width
-    height
-    ratio
-    s3Key
-    s3Bucket
+    userUuid
+    title
+    content
     createdAt
     updatedAt
+    media {
+      uuid
+      filename
+      width
+      height
+      ratio
+      s3Key
+      s3Bucket
+      createdAt
+      updatedAt
+    }
   }
 }

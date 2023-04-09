@@ -1,9 +1,8 @@
 import { PrismaClient } from '@prisma/client/index.js'
-import { S3 } from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import {
   User,
   Post,
-  Media,
   Tag,
   Comment,
   MediaTag,
@@ -13,15 +12,7 @@ import dotenv from 'dotenv'
 import { v4 as uuidv4 } from 'uuid'
 import { MutationCreateMediaArgs } from '../../__generated__/schema'
 
-// s3 config
 dotenv.config()
-const s3 = new S3({
-  region: process.env.S3_REGION,
-  credentials: {
-    accessKeyId: process.env.S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
-  },
-})
 
 const prisma = new PrismaClient()
 
@@ -133,37 +124,61 @@ const Mutation = {
       height,
       ratio,
     }: MutationCreateMediaArgs
-  ): Promise<Media> {
-    const { createReadStream } = await file
-
-    console.log(createReadStream)
-
-    console.log(
-      'createMedia',
-      file,
-      filename,
-      contentType,
-      width,
-      height,
-      ratio
-    )
-
-    console.log(file)
-
+  ): Promise<Post> {
     // get s3 key and bucket from env
+    // バケット名とアップロードする画像のキーを設定
     // S3にファイルをアップロードする
     const s3Key = `${uuidv4()}/${filename}`
     const s3Bucket = process.env.S3_BUCKET as string
-    await s3.putObject({
-      Bucket: s3Bucket,
-      Key: s3Key,
-      Body: file,
-      ContentType: contentType,
+    const s3Region = process.env.S3_REGION as string
+    const s3AccessKeyId = process.env.S3_ACCESS_KEY_ID as string
+    const s3SecretAccessKey = process.env.S3_SECRET_ACCESS_KEY as string
+
+    // S3クライアントを作成
+    const s3Client = new S3Client({
+      region: s3Region,
+      credentials: {
+        accessKeyId: s3AccessKeyId,
+        secretAccessKey: s3SecretAccessKey,
+      },
     })
 
-    return prisma.media.create({
-      data: { post: {}, filename, width, height, ratio, s3Key, s3Bucket },
-      include: { post: true },
+    // 画像をアップロードする関数
+    async function uploadImage(bucket, key, data) {
+      const { createReadStream, filename } = await file
+      const fileStream = createReadStream()
+      const fileBuffer = await new Promise((resolve, reject) => {
+        const chunks = []
+        fileStream.on('data', (chunk) => chunks.push(chunk))
+        fileStream.on('error', reject)
+        fileStream.on('end', () => resolve(Buffer.concat(chunks)))
+      })
+
+      const uploadParams = {
+        Bucket: bucket,
+        Key: key,
+        Body: fileBuffer,
+        ContentType: contentType, // 画像の形式に応じて変更
+      }
+
+      try {
+        const result = await s3Client.send(new PutObjectCommand(uploadParams))
+        console.log('画像がアップロードされました:', result)
+      } catch (error) {
+        console.error('画像のアップロードに失敗しました:', error)
+      }
+    }
+
+    // uploadImage(s3Bucket, s3Key, file)
+
+    return prisma.post.create({
+      data: {
+        userUuid: 'fc5be936-d23c-41f6-9705-d885c61b13d4',
+        media: {
+          create: [{ filename, width, height, ratio, s3Key, s3Bucket }],
+        },
+      },
+      include: { media: true },
     })
   },
 

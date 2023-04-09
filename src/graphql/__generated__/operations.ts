@@ -14,7 +14,7 @@ export type CreateMediaMutationVariables = Exact<{
 }>;
 
 
-export type CreateMediaMutation = { __typename?: 'Mutation', createMedia?: { __typename?: 'Media', uuid: string, filename: string, width: number, height: number, ratio: number, s3Key: string, s3Bucket: string, createdAt: any, updatedAt: any } | null };
+export type CreateMediaMutation = { __typename?: 'Mutation', createMedia?: { __typename?: 'Post', uuid: string, userUuid: string, title?: string | null, content?: string | null, createdAt: any, updatedAt: any, media: Array<{ __typename?: 'Media', uuid: string, filename: string, width: number, height: number, ratio: number, s3Key: string, s3Bucket: string, createdAt: any, updatedAt: any }> } | null };
 
 export type PostsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -180,7 +180,7 @@ export type Mutation = {
   /** 新しいコメントを作成する */
   createComment?: Maybe<Comment>;
   /** 新しいメディアを作成する */
-  createMedia?: Maybe<Media>;
+  createMedia?: Maybe<Post>;
   /** 新しいポストを作成する */
   createPost?: Maybe<Post>;
   /** 新しいタグを作成する */

@@ -49,7 +49,7 @@ server.start().then(async () => {
       context: async ({ req, res }) => {
         const jwt = req.headers.authorization
         const body = req.body
-        console.log('body: ', body)
+        // console.log('body: ', body)
         console.log('jwt: ', jwt)
         return { jwt }
       },

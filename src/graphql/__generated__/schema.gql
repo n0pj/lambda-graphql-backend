@@ -147,7 +147,7 @@ type Mutation {
   createComment(content: String!, mediaUuid: String!, userUuid: String!): Comment
 
   """新しいメディアを作成する"""
-  createMedia(contentType: String!, file: Upload!, filename: String!, height: Int!, ratio: Float!, width: Int!): Media
+  createMedia(contentType: String!, file: Upload!, filename: String!, height: Int!, ratio: Float!, width: Int!): Post
 
   """新しいポストを作成する"""
   createPost(content: String, title: String, userUuid: String!): Post
