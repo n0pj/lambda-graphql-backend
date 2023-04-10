@@ -13,13 +13,14 @@ type Mutation {
   新しいメディアを作成する
   """
   createMedia(
+    userUuid: String!
     file: Upload!
     filename: String!
     contentType: String!
     width: Int!
     height: Int!
     ratio: Float!
-  ): Media
+  ): Post
 
   """
   新しいタグを作成する
@@ -107,4 +108,13 @@ type Mutation {
     userUuid: String!
     content: String!
   ): Comment
+
+  signin(email: String!, password: String!): User
+
+  signup(
+    username: String!
+    email: String!
+    phoneNumber: String!
+    password: String!
+  ): User
 }

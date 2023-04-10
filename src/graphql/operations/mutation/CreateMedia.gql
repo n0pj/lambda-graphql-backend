@@ -1,5 +1,6 @@
 #
 mutation CreateMedia(
+  $userUuid: String!
   $file: Upload!
   $filename: String!
   $contentType: String!
@@ -8,6 +9,7 @@ mutation CreateMedia(
   $ratio: Float!
 ) {
   createMedia(
+    userUuid: $userUuid
     file: $file
     filename: $filename
     contentType: $contentType
@@ -16,13 +18,21 @@ mutation CreateMedia(
     ratio: $ratio
   ) {
     uuid
-    filename
-    width
-    height
-    ratio
-    s3Key
-    s3Bucket
+    userUuid
+    title
+    content
     createdAt
     updatedAt
+    media {
+      uuid
+      filename
+      width
+      height
+      ratio
+      s3Key
+      s3Bucket
+      createdAt
+      updatedAt
+    }
   }
 }

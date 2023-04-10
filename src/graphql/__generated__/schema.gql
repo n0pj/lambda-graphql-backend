@@ -147,7 +147,7 @@ type Mutation {
   createComment(content: String!, mediaUuid: String!, userUuid: String!): Comment
 
   """新しいメディアを作成する"""
-  createMedia(contentType: String!, file: Upload!, filename: String!, height: Int!, ratio: Float!, width: Int!): Media
+  createMedia(contentType: String!, file: Upload!, filename: String!, height: Int!, ratio: Float!, userUuid: String!, width: Int!): Post
 
   """新しいポストを作成する"""
   createPost(content: String, title: String, userUuid: String!): Post
@@ -160,6 +160,8 @@ type Mutation {
 
   """メディアからお気に入りを削除する"""
   removeMediaFromFavorites(favoriteUuid: String!): Favorite
+  signin(email: String!, password: String!): User
+  signup(email: String!, password: String!, phoneNumber: String!, username: String!): User
 }
 
 type Post {
