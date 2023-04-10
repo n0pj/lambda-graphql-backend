@@ -169,9 +169,9 @@ type Mutation {
 
   """メディアからお気に入りを削除する"""
   removeMediaFromFavorites(favoriteUuid: String!): Favorite
-  signin(email: String!, password: String!): AuthenticationResult
-  signout(accessToken: String!): Boolean
-  signup(email: String!, password: String!, phoneNumber: String!, username: String!): User
+  signIn(email: String!, password: String!): AuthenticationResult
+  signOut(accessToken: String!): Boolean
+  signUp(email: String!, password: String!, phoneNumber: String!, username: String!): User
 }
 
 type Post {

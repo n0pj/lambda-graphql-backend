@@ -184,9 +184,9 @@ export type Mutation = {
   readonly createUser?: Maybe<User>;
   /** メディアからお気に入りを削除する */
   readonly removeMediaFromFavorites?: Maybe<Favorite>;
-  readonly signin?: Maybe<AuthenticationResult>;
-  readonly signout?: Maybe<Scalars['Boolean']>;
-  readonly signup?: Maybe<User>;
+  readonly signIn?: Maybe<AuthenticationResult>;
+  readonly signOut?: Maybe<Scalars['Boolean']>;
+  readonly signUp?: Maybe<User>;
 };
 
 
@@ -286,18 +286,18 @@ export type MutationRemoveMediaFromFavoritesArgs = {
 };
 
 
-export type MutationSigninArgs = {
+export type MutationSignInArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
 
 
-export type MutationSignoutArgs = {
+export type MutationSignOutArgs = {
   accessToken: Scalars['String'];
 };
 
 
-export type MutationSignupArgs = {
+export type MutationSignUpArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
   phoneNumber: Scalars['String'];
@@ -678,9 +678,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createTag?: Resolver<Maybe<ResolversTypes['Tag']>, ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name' | 'userUuid'>>;
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'username'>>;
   removeMediaFromFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationRemoveMediaFromFavoritesArgs, 'favoriteUuid'>>;
-  signin?: Resolver<Maybe<ResolversTypes['AuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSigninArgs, 'email' | 'password'>>;
-  signout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignoutArgs, 'accessToken'>>;
-  signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'phoneNumber' | 'username'>>;
+  signIn?: Resolver<Maybe<ResolversTypes['AuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
+  signOut?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignOutArgs, 'accessToken'>>;
+  signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'phoneNumber' | 'username'>>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {

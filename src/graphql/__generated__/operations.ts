@@ -200,9 +200,9 @@ export type Mutation = {
   createUser?: Maybe<User>;
   /** メディアからお気に入りを削除する */
   removeMediaFromFavorites?: Maybe<Favorite>;
-  signin?: Maybe<AuthenticationResult>;
-  signout?: Maybe<Scalars['Boolean']>;
-  signup?: Maybe<User>;
+  signIn?: Maybe<AuthenticationResult>;
+  signOut?: Maybe<Scalars['Boolean']>;
+  signUp?: Maybe<User>;
 };
 
 
@@ -302,18 +302,18 @@ export type MutationRemoveMediaFromFavoritesArgs = {
 };
 
 
-export type MutationSigninArgs = {
+export type MutationSignInArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
 };
 
 
-export type MutationSignoutArgs = {
+export type MutationSignOutArgs = {
   accessToken: Scalars['String'];
 };
 
 
-export type MutationSignupArgs = {
+export type MutationSignUpArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
   phoneNumber: Scalars['String'];

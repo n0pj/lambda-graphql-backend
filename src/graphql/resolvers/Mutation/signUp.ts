@@ -8,16 +8,16 @@ import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
 
 const prisma = new PrismaClient()
 
-interface SignupArgs {
+interface SignUpArgs {
   username: string
   email: string
   phoneNumber: string
   password: string
 }
 
-const signup = async (
+const signUp = async (
   _: any,
-  { email, username, phoneNumber, password }: SignupArgs
+  { email, username, phoneNumber, password }: SignUpArgs
 ) => {
   const AWS_REGION = process.env.AWS_REGION
   const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET
@@ -71,4 +71,4 @@ const signup = async (
   return user
 }
 
-export default signup
+export default signUp
