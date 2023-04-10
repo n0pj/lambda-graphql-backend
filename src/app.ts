@@ -17,6 +17,7 @@ import cors from 'cors/lib/index.js'
 import { Context } from 'types/app'
 // import { graphqlUploadExpress } from 'graphql-upload-minimal'
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs'
+import { CognitoJwtVerifier } from 'aws-jwt-verify'
 
 // log4js.configure({
 //   appenders: { cwLogs: { type: '@log4js-node/aws-cloudwatch' } },
@@ -47,11 +48,30 @@ server.start().then(async () => {
     }),
     expressMiddleware(server, {
       context: async ({ req, res }) => {
-        const jwt = req.headers.authorization
-        const body = req.body
-        // console.log('body: ', body)
-        console.log('jwt: ', jwt)
-        return { jwt }
+        // Bearer を取り除く
+        let rawJwt = req.headers.authorization
+        rawJwt = rawJwt ? rawJwt.replace('Bearer ', '') : ''
+
+        // console.log('rawJwt: ', rawJwt)
+        // decode jwt
+
+        // https://github.com/awslabs/aws-jwt-verify
+        const verifier = CognitoJwtVerifier.create({
+          userPoolId: process.env.COGNITO_USER_POOL_ID,
+          tokenUse: 'id',
+          clientId: process.env.COGNITO_CLIENT_ID,
+        })
+
+        let decoded = null
+        try {
+          decoded = await verifier.verify(rawJwt)
+
+          console.log('decoded: ', decoded)
+        } catch (err) {
+          console.log('error: ', err)
+        }
+
+        return { decoded }
       },
     })
   )

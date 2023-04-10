@@ -11,6 +11,12 @@ import {
 import dotenv from 'dotenv'
 import { v4 as uuidv4 } from 'uuid'
 import { MutationCreateMediaArgs } from '../../__generated__/schema'
+import {
+  CognitoIdentityProviderClient,
+  SignUpCommand,
+} from '@aws-sdk/client-cognito-identity-provider'
+import signin from './signin.js'
+import signup from './signup.js'
 
 dotenv.config()
 
@@ -102,21 +108,21 @@ interface AddCommentToCommentArgs {
  * Mutation resolvers
  */
 const Mutation = {
-  async createUser({ username }: CreateUserArgs): Promise<User> {
+  async createUser(_, { username }: CreateUserArgs): Promise<User> {
     return prisma.user.create({ data: { username } })
   },
 
-  async createPost({
-    userUuid,
-    title,
-    content,
-  }: CreatePostArgs): Promise<Post> {
+  async createPost(
+    _,
+    { userUuid, title, content }: CreatePostArgs
+  ): Promise<Post> {
     return prisma.post.create({ data: { userUuid, title, content } })
   },
 
   async createMedia(
     _,
     {
+      userUuid,
       file,
       filename,
       contentType,
@@ -173,7 +179,7 @@ const Mutation = {
 
     return prisma.post.create({
       data: {
-        userUuid: 'fc5be936-d23c-41f6-9705-d885c61b13d4',
+        userUuid,
         media: {
           create: [{ filename, width, height, ratio, s3Key, s3Bucket }],
         },
@@ -366,6 +372,8 @@ const Mutation = {
 
     return subComment
   },
+  signup,
+  signin,
 }
 
 export default Mutation

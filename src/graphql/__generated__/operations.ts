@@ -5,6 +5,7 @@ export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K]
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type CreateMediaMutationVariables = Exact<{
+  userUuid: Scalars['String'];
   file: Scalars['Upload'];
   filename: Scalars['String'];
   contentType: Scalars['String'];
@@ -189,6 +190,8 @@ export type Mutation = {
   createUser?: Maybe<User>;
   /** メディアからお気に入りを削除する */
   removeMediaFromFavorites?: Maybe<Favorite>;
+  signin?: Maybe<User>;
+  signup?: Maybe<User>;
 };
 
 
@@ -260,6 +263,7 @@ export type MutationCreateMediaArgs = {
   filename: Scalars['String'];
   height: Scalars['Int'];
   ratio: Scalars['Float'];
+  userUuid: Scalars['String'];
   width: Scalars['Int'];
 };
 
@@ -284,6 +288,20 @@ export type MutationCreateUserArgs = {
 
 export type MutationRemoveMediaFromFavoritesArgs = {
   favoriteUuid: Scalars['String'];
+};
+
+
+export type MutationSigninArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+};
+
+
+export type MutationSignupArgs = {
+  email: Scalars['String'];
+  password: Scalars['String'];
+  phoneNumber: Scalars['String'];
+  username: Scalars['String'];
 };
 
 export type Post = {
