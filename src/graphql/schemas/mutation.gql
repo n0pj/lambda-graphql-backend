@@ -109,7 +109,7 @@ type Mutation {
     content: String!
   ): Comment
 
-  signin(email: String!, password: String!): User
+  signin(email: String!, password: String!): AuthenticationResult
 
   signup(
     username: String!
@@ -117,4 +117,6 @@ type Mutation {
     phoneNumber: String!
     password: String!
   ): User
+
+  signout(accessToken: String!): Boolean
 }

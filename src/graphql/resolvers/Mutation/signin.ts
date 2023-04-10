@@ -31,6 +31,8 @@ const signin = async (_: any, { email, password }: SigninArgs) => {
     },
   })
 
+  let authenticationResult
+
   try {
     const response = await client.send(signInCommand)
 
@@ -56,6 +58,8 @@ const signin = async (_: any, { email, password }: SigninArgs) => {
     //   ChallengeParameters: {},
     //   Session: undefined
     // }
+    authenticationResult = response.AuthenticationResult
+
     console.log(response)
     console.log('User signed in successfully')
   } catch (error) {
@@ -64,12 +68,7 @@ const signin = async (_: any, { email, password }: SigninArgs) => {
     throw new Error(error)
   }
 
-  const username = email
-  const user = await prisma.user.findUnique({
-    where: { username },
-  })
-
-  return user
+  return authenticationResult
 }
 
 export default signin

@@ -10,6 +10,15 @@ type Action {
   uuid: String!
 }
 
+type AuthenticationResult {
+  AccessToken: String
+  ExpiresIn: Int
+  IdToken: String
+  NewDeviceMetadata: String
+  RefreshToken: String
+  TokenType: String
+}
+
 type Comment {
   commentActions: [CommentAction!]!
   content: String!
@@ -160,7 +169,8 @@ type Mutation {
 
   """メディアからお気に入りを削除する"""
   removeMediaFromFavorites(favoriteUuid: String!): Favorite
-  signin(email: String!, password: String!): User
+  signin(email: String!, password: String!): AuthenticationResult
+  signout(accessToken: String!): Boolean
   signup(email: String!, password: String!, phoneNumber: String!, username: String!): User
 }
 

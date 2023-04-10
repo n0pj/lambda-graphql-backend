@@ -45,6 +45,16 @@ export type Action = {
   uuid: Scalars['String'];
 };
 
+export type AuthenticationResult = {
+  __typename?: 'AuthenticationResult';
+  AccessToken?: Maybe<Scalars['String']>;
+  ExpiresIn?: Maybe<Scalars['Int']>;
+  IdToken?: Maybe<Scalars['String']>;
+  NewDeviceMetadata?: Maybe<Scalars['String']>;
+  RefreshToken?: Maybe<Scalars['String']>;
+  TokenType?: Maybe<Scalars['String']>;
+};
+
 export type Comment = {
   __typename?: 'Comment';
   commentActions: Array<CommentAction>;
@@ -190,7 +200,8 @@ export type Mutation = {
   createUser?: Maybe<User>;
   /** メディアからお気に入りを削除する */
   removeMediaFromFavorites?: Maybe<Favorite>;
-  signin?: Maybe<User>;
+  signin?: Maybe<AuthenticationResult>;
+  signout?: Maybe<Scalars['Boolean']>;
   signup?: Maybe<User>;
 };
 
@@ -294,6 +305,11 @@ export type MutationRemoveMediaFromFavoritesArgs = {
 export type MutationSigninArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationSignoutArgs = {
+  accessToken: Scalars['String'];
 };
 
 

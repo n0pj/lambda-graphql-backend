@@ -29,6 +29,16 @@ export type Action = {
   readonly uuid: Scalars['String'];
 };
 
+export type AuthenticationResult = {
+  readonly __typename?: 'AuthenticationResult';
+  readonly AccessToken?: Maybe<Scalars['String']>;
+  readonly ExpiresIn?: Maybe<Scalars['Int']>;
+  readonly IdToken?: Maybe<Scalars['String']>;
+  readonly NewDeviceMetadata?: Maybe<Scalars['String']>;
+  readonly RefreshToken?: Maybe<Scalars['String']>;
+  readonly TokenType?: Maybe<Scalars['String']>;
+};
+
 export type Comment = {
   readonly __typename?: 'Comment';
   readonly commentActions: ReadonlyArray<CommentAction>;
@@ -174,7 +184,8 @@ export type Mutation = {
   readonly createUser?: Maybe<User>;
   /** メディアからお気に入りを削除する */
   readonly removeMediaFromFavorites?: Maybe<Favorite>;
-  readonly signin?: Maybe<User>;
+  readonly signin?: Maybe<AuthenticationResult>;
+  readonly signout?: Maybe<Scalars['Boolean']>;
   readonly signup?: Maybe<User>;
 };
 
@@ -278,6 +289,11 @@ export type MutationRemoveMediaFromFavoritesArgs = {
 export type MutationSigninArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
+};
+
+
+export type MutationSignoutArgs = {
+  accessToken: Scalars['String'];
 };
 
 
@@ -453,6 +469,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Action: ResolverTypeWrapper<Action>;
+  AuthenticationResult: ResolverTypeWrapper<AuthenticationResult>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<Comment>;
   CommentAction: ResolverTypeWrapper<CommentAction>;
@@ -480,6 +497,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Action: Action;
+  AuthenticationResult: AuthenticationResult;
   Boolean: Scalars['Boolean'];
   Comment: Comment;
   CommentAction: CommentAction;
@@ -513,6 +531,16 @@ export type ActionResolvers<ContextType = any, ParentType extends ResolversParen
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   userUuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   uuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AuthenticationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthenticationResult'] = ResolversParentTypes['AuthenticationResult']> = {
+  AccessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  ExpiresIn?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  IdToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  NewDeviceMetadata?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  RefreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  TokenType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -650,7 +678,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createTag?: Resolver<Maybe<ResolversTypes['Tag']>, ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name' | 'userUuid'>>;
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'username'>>;
   removeMediaFromFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationRemoveMediaFromFavoritesArgs, 'favoriteUuid'>>;
-  signin?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSigninArgs, 'email' | 'password'>>;
+  signin?: Resolver<Maybe<ResolversTypes['AuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSigninArgs, 'email' | 'password'>>;
+  signout?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignoutArgs, 'accessToken'>>;
   signup?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignupArgs, 'email' | 'password' | 'phoneNumber' | 'username'>>;
 };
 
@@ -727,6 +756,7 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type Resolvers<ContextType = any> = {
   Action?: ActionResolvers<ContextType>;
+  AuthenticationResult?: AuthenticationResultResolvers<ContextType>;
   Comment?: CommentResolvers<ContextType>;
   CommentAction?: CommentActionResolvers<ContextType>;
   DateTime?: GraphQLScalarType;

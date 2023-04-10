@@ -16,6 +16,7 @@ import addCommentToMedia from './addCommentToMedia.js'
 import addCommentToComment from './addCommentToComment.js'
 import signin from './signin.js'
 import signup from './signup.js'
+import signout from './signout.js'
 
 const prisma = new PrismaClient()
 
@@ -39,6 +40,7 @@ const Mutation = {
   addCommentToComment,
   signup,
   signin,
+  signout,
 }
 
 export default Mutation
