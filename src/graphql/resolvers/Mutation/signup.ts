@@ -30,6 +30,7 @@ const signup = async (
     SecretHash: generateSecretHash(CLIENT_ID, CLIENT_SECRET, uuid),
     Username: uuid,
     Password: password,
+    // SecretHash: generateSecretHash(CLIENT_ID, CLIENT_SECRET, uuid),
     UserAttributes: [
       {
         Name: 'email',

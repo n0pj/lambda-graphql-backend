@@ -38,7 +38,7 @@ const signin = async (_: any, { email, password }: SigninArgs) => {
     // {
     //   '$metadata': {
     //     httpStatusCode: 200,
-    //     requestId: 'xxx',
+    //     requestId: '5c5bb8ad-e748-4f2e-a336-794304892b23',
     //     extendedRequestId: undefined,
     //     cfId: undefined,
     //     attempts: 1,

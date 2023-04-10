@@ -14,10 +14,12 @@ import express from 'express/index.js'
 import awsServerlessExpressMiddleware from 'aws-serverless-express/middleware.js'
 import cors from 'cors/lib/index.js'
 // import log4js from 'log4js/'
-import { Context } from 'types/app'
 // import { graphqlUploadExpress } from 'graphql-upload-minimal'
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs'
 import { CognitoJwtVerifier } from 'aws-jwt-verify'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 // log4js.configure({
 //   appenders: { cwLogs: { type: '@log4js-node/aws-cloudwatch' } },
@@ -27,7 +29,7 @@ import { CognitoJwtVerifier } from 'aws-jwt-verify'
 // const logger = log4js.getLogger('backend-api')
 const schemaPath = join(process.cwd(), 'src/graphql/__generated__/schema.gql')
 const typeDefs = readFileSync(schemaPath, 'utf8')
-const server = new ApolloServer<Context>({
+const server = new ApolloServer({
   typeDefs,
   resolvers,
   // logger,
