@@ -300,7 +300,6 @@ export type MutationSignOutArgs = {
 export type MutationSignUpArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
-  phoneNumber: Scalars['String'];
   username: Scalars['String'];
 };
 
@@ -680,7 +679,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   removeMediaFromFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationRemoveMediaFromFavoritesArgs, 'favoriteUuid'>>;
   signIn?: Resolver<Maybe<ResolversTypes['AuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
   signOut?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignOutArgs, 'accessToken'>>;
-  signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'phoneNumber' | 'username'>>;
+  signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {

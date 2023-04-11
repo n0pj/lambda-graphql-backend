@@ -21,17 +21,13 @@ const signIn = async (_: any, { email, password }: SignInArgs) => {
   try {
     await signInSchema.validate({ email, password }, { abortEarly: false })
   } catch (error) {
-    throw new GraphQLError('Invalid input', {
-      extensions: {
-        code: 'INVALID_INPUT',
-        errors: error,
-      },
-    })
+    console.log('Error validating signIn input:', error)
+    throw new Error(error)
   }
 
   const AWS_REGION = process.env.AWS_REGION
-  const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET
   const CLIENT_ID = process.env.COGNITO_CLIENT_ID
+  const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET
   const client = new CognitoIdentityProviderClient({
     region: AWS_REGION,
   })

@@ -38,16 +38,32 @@ const server = new ApolloServer({
 const app = express()
 
 server.start().then(async () => {
+  // cors の設定
   app.use(
     cors({
       // origin: 'http://localhost:3000',
-    }),
-    express.json(),
-    awsServerlessExpressMiddleware.eventContext(),
+    })
+  )
+
+  // json の設定
+  app.use(express.json())
+
+  // graphql-upload ( content-type: multipart/form-data ) の設定
+  app.use(
     graphqlUploadExpress({
       maxFileSize: 10000000, // 10 MB
       maxFiles: 10,
-    }),
+    })
+  )
+
+  // env=local の場合は、awsServerlessExpressMiddleware を使わない
+  if (process.env.ENV === 'local') {
+  } else {
+    // lambda で動かす場合は、awsServerlessExpressMiddleware を使う
+    app.use(awsServerlessExpressMiddleware.eventContext())
+  }
+
+  app.use(
     expressMiddleware(server, {
       context: async ({ req, res }) => {
         // Bearer を取り除く
@@ -68,9 +84,9 @@ server.start().then(async () => {
         try {
           decoded = await verifier.verify(rawJwt)
 
-          console.log('decoded: ', decoded)
+          // console.log('decoded: ', decoded)
         } catch (err) {
-          console.log('error: ', err)
+          // console.log('error: ', err)
         }
 
         return { decoded }
@@ -78,7 +94,7 @@ server.start().then(async () => {
     })
   )
 
-  app.listen(3001, function() {
+  app.listen(3001, function () {
     console.log('App started')
     // logger.trace('App started')
   })

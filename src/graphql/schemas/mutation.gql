@@ -111,12 +111,7 @@ type Mutation {
 
   signIn(email: String!, password: String!): AuthenticationResult
 
-  signUp(
-    username: String!
-    email: String!
-    phoneNumber: String!
-    password: String!
-  ): User
+  signUp(username: String!, email: String!, password: String!): User
 
   signOut(accessToken: String!): Boolean
 }

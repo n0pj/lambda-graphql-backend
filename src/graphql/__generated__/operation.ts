@@ -316,7 +316,6 @@ export type MutationSignOutArgs = {
 export type MutationSignUpArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
-  phoneNumber: Scalars['String'];
   username: Scalars['String'];
 };
 
