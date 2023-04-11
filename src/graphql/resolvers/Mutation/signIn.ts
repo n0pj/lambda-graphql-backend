@@ -1,45 +1,30 @@
-import { PrismaClient } from '@prisma/client/index.js'
 import {
   CognitoIdentityProviderClient,
   InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
-import Joi from 'joi'
 import { GraphQLError } from 'graphql'
+import Yup from 'yup'
 
-interface SignInArgs {
-  email: string
-  password: string
-}
-
-const prisma = new PrismaClient()
-
-const signInSchema = Joi.object<SignInArgs>({
-  email: Joi.string()
+const signInSchema = Yup.object({
+  email: Yup.string()
     .email()
     .required(),
-  password: Joi.string()
+  password: Yup.string()
     .min(8)
-    .regex(/[0-9]/)
-    .regex(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)
-    .regex(/[A-Z]/)
-    .regex(/[a-z]/)
     .required(),
 })
 
-// type SignInArgs = z.infer<typeof signInSchema>
+type SignInArgs = Yup.InferType<typeof signInSchema>
 
 const signIn = async (_: any, { email, password }: SignInArgs) => {
-  const result = signInSchema.validate({ email, password })
-
-  if (result.error === undefined) {
-  } else {
-    const errors = result
-    console.log(errors)
+  try {
+    await signInSchema.validate({ email, password }, { abortEarly: false })
+  } catch (error) {
     throw new GraphQLError('Invalid input', {
       extensions: {
         code: 'INVALID_INPUT',
-        errors: errors,
+        errors: error,
       },
     })
   }

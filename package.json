@@ -25,10 +25,10 @@
     "graphql": "^16.6.0",
     "graphql-scalars": "^1.21.3",
     "graphql-upload": "^16.0.2",
-    "joi": "^17.9.1",
     "log4js": "^6.9.1",
     "micro": "^9.4.1",
-    "prisma": "^4.6.1"
+    "prisma": "^4.6.1",
+    "yup": "^1.0.2"
   },
   "devDependencies": {
     "@graphql-codegen/add": "^4.0.1",
