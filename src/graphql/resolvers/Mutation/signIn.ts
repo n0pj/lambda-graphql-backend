@@ -4,37 +4,44 @@ import {
   InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
-import { z } from 'zod'
+import Joi from 'joi'
+import { GraphQLError } from 'graphql'
+
+interface SignInArgs {
+  email: string
+  password: string
+}
 
 const prisma = new PrismaClient()
 
-const signInSchema = z.object({
-  email: z.string().email(),
-  // カスタマイズしたパスワードポリシーに合わせる
-  // パスワードの最小文字数
-  // 8 文字
-  // パスワード要件
-  // 少なくとも 1 つの数字を含む
-  // 少なくとも 1 つの特殊文字を含む
-  // 少なくとも 1 つの大文字を含む
-  // 少なくとも 1 つの小文字を含む
-  password: z
-    .string()
+const signInSchema = Joi.object<SignInArgs>({
+  email: Joi.string()
+    .email()
+    .required(),
+  password: Joi.string()
     .min(8)
     .regex(/[0-9]/)
     .regex(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/)
     .regex(/[A-Z]/)
-    .regex(/[a-z]/),
+    .regex(/[a-z]/)
+    .required(),
 })
 
-type SignInArgs = z.infer<typeof signInSchema>
+// type SignInArgs = z.infer<typeof signInSchema>
 
 const signIn = async (_: any, { email, password }: SignInArgs) => {
-  const result = signInSchema.safeParse({ email, password })
-  if (result.success) {
+  const result = signInSchema.validate({ email, password })
+
+  if (result.error === undefined) {
   } else {
     const errors = result
     console.log(errors)
+    throw new GraphQLError('Invalid input', {
+      extensions: {
+        code: 'INVALID_INPUT',
+        errors: errors,
+      },
+    })
   }
 
   const AWS_REGION = process.env.AWS_REGION
