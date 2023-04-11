@@ -42,7 +42,6 @@
     "jest": "^29.5.0",
     "jest-html-reporters": "^3.1.4",
     "jest-performance-testing": "^1.0.0",
-    "prisma-faker": "^0.0.1",
     "ts-jest": "^29.0.5",
     "typescript": "^5.0.2"
   },
