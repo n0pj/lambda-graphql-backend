@@ -53,7 +53,7 @@ npm run dev
 or
 
 ```
-yarn dev
+npm run dev
 ```
 
 ## コマンド一覧
