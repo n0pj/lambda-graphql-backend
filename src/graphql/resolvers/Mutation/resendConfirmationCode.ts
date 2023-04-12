@@ -14,7 +14,8 @@ import {
 const prisma = new PrismaClient()
 
 const resendConfirmationCodeSchema = yup.object().shape({
-  email: yup.string().email().required(),
+  // uuidv4
+  uuid: yup.string().min(36).max(36).required(),
 })
 
 type ResendConfirmationCodeArgs = yup.InferType<
@@ -23,10 +24,10 @@ type ResendConfirmationCodeArgs = yup.InferType<
 
 const resendConfirmationCode = async (
   _: any,
-  { email }: ResendConfirmationCodeArgs
+  { uuid }: ResendConfirmationCodeArgs
 ) => {
   try {
-    await resendConfirmationCodeSchema.validate({ email })
+    await resendConfirmationCodeSchema.validate({ uuid })
   } catch (error) {
     console.log('Error validating resendConfirmationCode input:', error)
     throw new Error(error)
@@ -39,9 +40,9 @@ const resendConfirmationCode = async (
     SecretHash: generateSecretHash(
       COGNITO_CLIENT_ID,
       COGNITO_CLIENT_SECRET,
-      email
+      uuid
     ),
-    Username: email,
+    Username: uuid,
   })
 
   try {

@@ -74,7 +74,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
   // Check if user with given email already exists in Cognito
   const getUserCommand = new AdminGetUserCommand({
     UserPoolId: COGNITO_USER_POOL_ID,
-    Username: email,
+    Username: username,
   })
 
   try {
@@ -96,7 +96,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
     const user = await prisma.user.create({
       data: {
         uuid,
-        // email,
+        email,
         username,
         // phoneNumber,
       },
@@ -118,10 +118,10 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
           Name: 'email',
           Value: email,
         },
-        // {
-        //   Name: 'nickname',
-        //   Value: username,
-        // },
+        {
+          Name: 'nickname',
+          Value: username,
+        },
       ],
     })
 

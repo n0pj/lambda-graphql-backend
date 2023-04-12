@@ -29,16 +29,6 @@ export type Action = {
   readonly uuid: Scalars['String'];
 };
 
-export type AuthenticationResult = {
-  readonly __typename?: 'AuthenticationResult';
-  readonly AccessToken?: Maybe<Scalars['String']>;
-  readonly ExpiresIn?: Maybe<Scalars['Int']>;
-  readonly IdToken?: Maybe<Scalars['String']>;
-  readonly NewDeviceMetadata?: Maybe<Scalars['String']>;
-  readonly RefreshToken?: Maybe<Scalars['String']>;
-  readonly TokenType?: Maybe<Scalars['String']>;
-};
-
 export type Comment = {
   readonly __typename?: 'Comment';
   readonly commentActions: ReadonlyArray<CommentAction>;
@@ -186,7 +176,7 @@ export type Mutation = {
   /** メディアからお気に入りを削除する */
   readonly removeMediaFromFavorites?: Maybe<Favorite>;
   readonly resendConfirmationCode?: Maybe<Scalars['Boolean']>;
-  readonly signIn?: Maybe<AuthenticationResult>;
+  readonly signIn?: Maybe<ResAuthenticationResult>;
   readonly signOut?: Maybe<Scalars['Boolean']>;
   readonly signUp?: Maybe<User>;
 };
@@ -249,7 +239,7 @@ export type MutationAddTagToMediaArgs = {
 
 export type MutationConfirmSignUpArgs = {
   code: Scalars['String'];
-  email: Scalars['String'];
+  uuid: Scalars['String'];
 };
 
 
@@ -295,13 +285,13 @@ export type MutationRemoveMediaFromFavoritesArgs = {
 
 
 export type MutationResendConfirmationCodeArgs = {
-  email: Scalars['String'];
+  uuid: Scalars['String'];
 };
 
 
 export type MutationSignInArgs = {
-  email: Scalars['String'];
   password: Scalars['String'];
+  signInIdentifier: Scalars['String'];
 };
 
 
@@ -360,6 +350,16 @@ export type QueryTagsArgs = {
 
 export type QueryUserArgs = {
   uuid: Scalars['String'];
+};
+
+export type ResAuthenticationResult = {
+  readonly __typename?: 'ResAuthenticationResult';
+  readonly accessToken?: Maybe<Scalars['String']>;
+  readonly expiresIn?: Maybe<Scalars['Int']>;
+  readonly idToken?: Maybe<Scalars['String']>;
+  readonly newDeviceMetadata?: Maybe<Scalars['String']>;
+  readonly refreshToken?: Maybe<Scalars['String']>;
+  readonly tokenType?: Maybe<Scalars['String']>;
 };
 
 export type ResMedia = {
@@ -481,7 +481,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Action: ResolverTypeWrapper<Action>;
-  AuthenticationResult: ResolverTypeWrapper<AuthenticationResult>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Comment: ResolverTypeWrapper<Comment>;
   CommentAction: ResolverTypeWrapper<CommentAction>;
@@ -498,6 +497,7 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   Post: ResolverTypeWrapper<Post>;
   Query: ResolverTypeWrapper<{}>;
+  ResAuthenticationResult: ResolverTypeWrapper<ResAuthenticationResult>;
   ResMedia: ResolverTypeWrapper<ResMedia>;
   String: ResolverTypeWrapper<Scalars['String']>;
   Tag: ResolverTypeWrapper<Tag>;
@@ -509,7 +509,6 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Action: Action;
-  AuthenticationResult: AuthenticationResult;
   Boolean: Scalars['Boolean'];
   Comment: Comment;
   CommentAction: CommentAction;
@@ -526,6 +525,7 @@ export type ResolversParentTypes = {
   Mutation: {};
   Post: Post;
   Query: {};
+  ResAuthenticationResult: ResAuthenticationResult;
   ResMedia: ResMedia;
   String: Scalars['String'];
   Tag: Tag;
@@ -543,16 +543,6 @@ export type ActionResolvers<ContextType = any, ParentType extends ResolversParen
   user?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
   userUuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   uuid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
-
-export type AuthenticationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['AuthenticationResult'] = ResolversParentTypes['AuthenticationResult']> = {
-  AccessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  ExpiresIn?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  IdToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  NewDeviceMetadata?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  RefreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  TokenType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -684,15 +674,15 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addEvaluationToTag?: Resolver<Maybe<ResolversTypes['TagEvaluation']>, ParentType, ContextType, RequireFields<MutationAddEvaluationToTagArgs, 'evaluationUuid' | 'tagUuid' | 'userUuid'>>;
   addMediaToFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationAddMediaToFavoritesArgs, 'mediaUuid' | 'userUuid'>>;
   addTagToMedia?: Resolver<Maybe<ResolversTypes['MediaTag']>, ParentType, ContextType, RequireFields<MutationAddTagToMediaArgs, 'mediaUuid' | 'tagUuid' | 'userUuid'>>;
-  confirmSignUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmSignUpArgs, 'code' | 'email'>>;
+  confirmSignUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmSignUpArgs, 'code' | 'uuid'>>;
   createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content' | 'mediaUuid' | 'userUuid'>>;
   createMedia?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreateMediaArgs, 'contentType' | 'file' | 'filename' | 'height' | 'ratio' | 'userUuid' | 'width'>>;
   createPost?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'userUuid'>>;
   createTag?: Resolver<Maybe<ResolversTypes['Tag']>, ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name' | 'userUuid'>>;
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'username'>>;
   removeMediaFromFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationRemoveMediaFromFavoritesArgs, 'favoriteUuid'>>;
-  resendConfirmationCode?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationResendConfirmationCodeArgs, 'email'>>;
-  signIn?: Resolver<Maybe<ResolversTypes['AuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
+  resendConfirmationCode?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationResendConfirmationCodeArgs, 'uuid'>>;
+  signIn?: Resolver<Maybe<ResolversTypes['ResAuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'password' | 'signInIdentifier'>>;
   signOut?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignOutArgs, 'accessToken'>>;
   signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
 };
@@ -715,6 +705,16 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   posts?: Resolver<ReadonlyArray<ResolversTypes['Post']>, ParentType, ContextType>;
   tags?: Resolver<ReadonlyArray<ResolversTypes['Tag']>, ParentType, ContextType, RequireFields<QueryTagsArgs, 'uuids'>>;
   user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<QueryUserArgs, 'uuid'>>;
+};
+
+export type ResAuthenticationResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResAuthenticationResult'] = ResolversParentTypes['ResAuthenticationResult']> = {
+  accessToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  expiresIn?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  idToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  newDeviceMetadata?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  refreshToken?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  tokenType?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type ResMediaResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResMedia'] = ResolversParentTypes['ResMedia']> = {
@@ -770,7 +770,6 @@ export type UserResolvers<ContextType = any, ParentType extends ResolversParentT
 
 export type Resolvers<ContextType = any> = {
   Action?: ActionResolvers<ContextType>;
-  AuthenticationResult?: AuthenticationResultResolvers<ContextType>;
   Comment?: CommentResolvers<ContextType>;
   CommentAction?: CommentActionResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
@@ -784,6 +783,7 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  ResAuthenticationResult?: ResAuthenticationResultResolvers<ContextType>;
   ResMedia?: ResMediaResolvers<ContextType>;
   Tag?: TagResolvers<ContextType>;
   TagEvaluation?: TagEvaluationResolvers<ContextType>;

@@ -109,13 +109,13 @@ type Mutation {
     content: String!
   ): Comment
 
-  signIn(email: String!, password: String!): AuthenticationResult
+  signIn(signInIdentifier: String!, password: String!): ResAuthenticationResult
 
   signUp(username: String!, email: String!, password: String!): User
 
-  resendConfirmationCode(email: String!): Boolean
+  resendConfirmationCode(uuid: String!): Boolean
 
-  confirmSignUp(email: String!, code: String!): Boolean
+  confirmSignUp(uuid: String!, code: String!): Boolean
 
   signOut(accessToken: String!): Boolean
 }

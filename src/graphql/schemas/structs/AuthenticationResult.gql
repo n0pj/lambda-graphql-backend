@@ -1,8 +1,0 @@
-type AuthenticationResult {
-  AccessToken: String
-  ExpiresIn: Int
-  IdToken: String
-  NewDeviceMetadata: String
-  RefreshToken: String
-  TokenType: String
-}

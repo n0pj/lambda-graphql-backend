@@ -1,0 +1,8 @@
+type ResAuthenticationResult {
+  accessToken: String
+  expiresIn: Int
+  idToken: String
+  newDeviceMetadata: String
+  refreshToken: String
+  tokenType: String
+}

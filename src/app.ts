@@ -89,7 +89,7 @@ server.start().then(async () => {
         try {
           decoded = await verifier.verify(rawJwt)
 
-          // console.log('decoded: ', decoded)
+          console.log('decoded: ', decoded)
         } catch (err) {
           // console.log('error: ', err)
         }

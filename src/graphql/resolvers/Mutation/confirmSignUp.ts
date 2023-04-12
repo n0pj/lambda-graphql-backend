@@ -14,15 +14,16 @@ import {
 const prisma = new PrismaClient()
 
 const confirmSignUpSchema = yup.object().shape({
-  email: yup.string().email().required(),
+  // uuidv4
+  uuid: yup.string().min(36).max(36).required(),
   code: yup.string().min(6).required(),
 })
 
 type ConfirmSignUpArgs = yup.InferType<typeof confirmSignUpSchema>
 
-const configmSignUp = async (_: any, { email, code }: ConfirmSignUpArgs) => {
+const configmSignUp = async (_: any, { uuid, code }: ConfirmSignUpArgs) => {
   try {
-    await confirmSignUpSchema.validate({ email, code })
+    await confirmSignUpSchema.validate({ uuid, code })
   } catch (error) {
     console.log('Error validating configmSignUp input:', error)
     throw new Error(error)
@@ -34,9 +35,9 @@ const configmSignUp = async (_: any, { email, code }: ConfirmSignUpArgs) => {
     SecretHash: generateSecretHash(
       COGNITO_CLIENT_ID,
       COGNITO_CLIENT_SECRET,
-      email
+      uuid
     ),
-    Username: email,
+    Username: uuid,
     ConfirmationCode: code,
   })
 
