@@ -77,7 +77,7 @@ const signIn = async (_: any, { email, password }: SignInArgs) => {
   } catch (error) {
     console.log('Error signing in user:', error)
 
-    throw new Error(error)
+    throw new Error('Error signing in user. Please try again later.')
   }
 
   return authenticationResult

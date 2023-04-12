@@ -64,7 +64,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
   const existingUser = await prisma.user.findUnique({ where: { username } })
 
   if (existingUser) {
-    throw new Error('Username is already taken')
+    throw new Error('Username is already taken.')
   }
 
   // start transaction
@@ -121,7 +121,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
       console.log('User signed up successfully')
     } catch (error) {
       console.log('Error signing up user:', error)
-      throw new Error(error)
+      throw new Error('Failed to sign up user.')
     }
 
     // try {
