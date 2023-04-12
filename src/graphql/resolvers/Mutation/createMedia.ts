@@ -11,7 +11,12 @@ import {
 import dotenv from 'dotenv'
 import { v4 as uuidv4 } from 'uuid'
 import { MutationCreateMediaArgs } from '../../__generated__/schema'
-
+import {
+  S3_BUCKET,
+  S3_REGION,
+  S3_ACCESS_KEY_ID,
+  S3_SECRET_ACCESS_KEY,
+} from '../../../constants/index.js'
 const prisma = new PrismaClient()
 
 const createMedia = async (
@@ -30,17 +35,13 @@ const createMedia = async (
   // バケット名とアップロードする画像のキーを設定
   // S3にファイルをアップロードする
   const s3Key = `${uuidv4()}/${filename}`
-  const s3Bucket = process.env.S3_BUCKET as string
-  const s3Region = process.env.S3_REGION as string
-  const s3AccessKeyId = process.env.S3_ACCESS_KEY_ID as string
-  const s3SecretAccessKey = process.env.S3_SECRET_ACCESS_KEY as string
 
   // S3クライアントを作成
   const s3Client = new S3Client({
-    region: s3Region,
+    region: S3_REGION,
     credentials: {
-      accessKeyId: s3AccessKeyId,
-      secretAccessKey: s3SecretAccessKey,
+      accessKeyId: S3_ACCESS_KEY_ID,
+      secretAccessKey: S3_SECRET_ACCESS_KEY,
     },
   })
 
@@ -70,13 +71,15 @@ const createMedia = async (
     }
   }
 
-  // uploadImage(s3Bucket, s3Key, file)
+  // uploadImage(S3_BUCKET, s3Key, file)
 
   return prisma.post.create({
     data: {
       userUuid,
       media: {
-        create: [{ filename, width, height, ratio, s3Key, s3Bucket }],
+        create: [
+          { filename, width, height, ratio, s3Key, s3Bucket: S3_BUCKET },
+        ],
       },
     },
     include: { media: true },

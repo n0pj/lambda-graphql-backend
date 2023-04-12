@@ -5,6 +5,11 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider'
 import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
 import * as yup from 'yup'
+import {
+  AWS_REGION,
+  COGNITO_CLIENT_ID,
+  COGNITO_CLIENT_SECRET,
+} from '../../../constants/index.js'
 
 const prisma = new PrismaClient()
 
@@ -23,13 +28,14 @@ const configmSignUp = async (_: any, { email, code }: ConfirmSignUpArgs) => {
     throw new Error(error)
   }
 
-  const AWS_REGION = process.env.AWS_REGION
-  const CLIENT_ID = process.env.COGNITO_CLIENT_ID
-  const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET
   const client = new CognitoIdentityProviderClient({ region: AWS_REGION })
   const signUpCommand = new ConfirmSignUpCommand({
-    ClientId: CLIENT_ID,
-    SecretHash: generateSecretHash(CLIENT_ID, CLIENT_SECRET, email),
+    ClientId: COGNITO_CLIENT_ID,
+    SecretHash: generateSecretHash(
+      COGNITO_CLIENT_ID,
+      COGNITO_CLIENT_SECRET,
+      email
+    ),
     Username: email,
     ConfirmationCode: code,
   })

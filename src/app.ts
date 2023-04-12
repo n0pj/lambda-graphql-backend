@@ -18,6 +18,11 @@ import cors from 'cors/lib/index.js'
 import graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.mjs'
 import { CognitoJwtVerifier } from 'aws-jwt-verify'
 import dotenv from 'dotenv'
+import {
+  ENV,
+  COGNITO_CLIENT_ID,
+  COGNITO_USER_POOL_ID,
+} from './constants/index.js'
 
 dotenv.config()
 
@@ -57,7 +62,7 @@ server.start().then(async () => {
   )
 
   // env=local の場合は、awsServerlessExpressMiddleware を使わない
-  if (process.env.ENV === 'local') {
+  if (ENV === 'local') {
   } else {
     // lambda で動かす場合は、awsServerlessExpressMiddleware を使う
     app.use(awsServerlessExpressMiddleware.eventContext())
@@ -75,9 +80,9 @@ server.start().then(async () => {
 
         // https://github.com/awslabs/aws-jwt-verify
         const verifier = CognitoJwtVerifier.create({
-          userPoolId: process.env.COGNITO_USER_POOL_ID,
+          userPoolId: COGNITO_USER_POOL_ID,
           tokenUse: 'id',
-          clientId: process.env.COGNITO_CLIENT_ID,
+          clientId: COGNITO_CLIENT_ID,
         })
 
         let decoded = null
