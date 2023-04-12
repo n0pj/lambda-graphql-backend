@@ -3,11 +3,18 @@ import { v4 as uuidv4 } from 'uuid'
 import {
   CognitoIdentityProviderClient,
   SignUpCommand,
+  AdminGetUserCommand,
   // AdminConfirmSignUpCommand,
   // AdminUpdateUserAttributesCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
-import * as yup from 'yup'
+import yup from 'yup'
+import {
+  AWS_REGION,
+  COGNITO_CLIENT_ID,
+  COGNITO_CLIENT_SECRET,
+  COGNITO_USER_POOL_ID,
+} from '../../../constants/index.js'
 
 const prisma = new PrismaClient()
 
@@ -37,9 +44,6 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
     throw new Error(error)
   }
 
-  const AWS_REGION = process.env.AWS_REGION
-  const CLIENT_ID = process.env.COGNITO_CLIENT_ID
-  const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET
   const client = new CognitoIdentityProviderClient({ region: AWS_REGION })
   const uuid = uuidv4()
 
@@ -67,6 +71,26 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
     throw new Error('Username is already taken.')
   }
 
+  // Check if user with given email already exists in Cognito
+  const getUserCommand = new AdminGetUserCommand({
+    UserPoolId: COGNITO_USER_POOL_ID,
+    Username: email,
+  })
+
+  try {
+    const existingUser = await client.send(getUserCommand)
+    console.log('User already exists in Cognito')
+    throw new Error('Email is already taken.')
+  } catch (error) {
+    // console.log('Error getting user from Cognito:', error)
+    if (error.__type !== 'UserNotFoundException') {
+      // console.log('Error getting user from Cognito:', error)
+      throw new Error('Failed to check if email is already taken.')
+    }
+
+    console.log('User does not exist in Cognito')
+  }
+
   // start transaction
   return await prisma.$transaction(async (prisma) => {
     const user = await prisma.user.create({
@@ -80,8 +104,12 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
 
     // サインアップ
     const signUpCommand = new SignUpCommand({
-      ClientId: CLIENT_ID,
-      SecretHash: generateSecretHash(CLIENT_ID, CLIENT_SECRET, uuid),
+      ClientId: COGNITO_CLIENT_ID,
+      SecretHash: generateSecretHash(
+        COGNITO_CLIENT_ID,
+        COGNITO_CLIENT_SECRET,
+        uuid
+      ),
       Username: uuid,
       Password: password,
       // SecretHash: generateSecretHash(CLIENT_ID, CLIENT_SECRET, uuid),
@@ -90,23 +118,23 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
           Name: 'email',
           Value: email,
         },
-        {
-          Name: 'nickname',
-          Value: username,
-        },
+        // {
+        //   Name: 'nickname',
+        //   Value: username,
+        // },
       ],
     })
 
     // // ユーザーのステータスを CONFIRMED にする
     // const adminConfirmSignUpCommand = new AdminConfirmSignUpCommand({
-    //   UserPoolId: process.env.COGNITO_USER_POOL_ID,
+    //   UserPoolId: COGNITO_USER_POOL_ID,
     //   Username: uuid,
     // })
 
     // // ユーザーの email_verified を更新する
     // const adminUpdateUserAttributesCommand =
     //   new AdminUpdateUserAttributesCommand({
-    //     UserPoolId: process.env.COGNITO_USER_POOL_ID,
+    //     UserPoolId: COGNITO_USER_POOL_ID,
     //     Username: uuid,
     //     UserAttributes: [
     //       {

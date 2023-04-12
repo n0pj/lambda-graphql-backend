@@ -3,3 +3,8 @@ export enum ERROR {
   INTERNAL_SERVER_ERROR = 'INTERNAL_SERVER_ERROR',
   BAD_REQUEST = 'BAD_REQUEST',
 }
+
+export const AWS_REGION = process.env.AWS_REGION
+export const COGNITO_CLIENT_ID = process.env.COGNITO_CLIENT_ID
+export const COGNITO_CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET
+export const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID

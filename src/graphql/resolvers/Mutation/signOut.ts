@@ -2,13 +2,13 @@ import {
   GlobalSignOutCommand,
   CognitoIdentityProviderClient,
 } from '@aws-sdk/client-cognito-identity-provider'
+import { AWS_REGION } from '../../../constants/index.js'
 
 interface SignoutArgs {
   accessToken: string
 }
 
 const signOut = async (_: any, { accessToken }: SignoutArgs) => {
-  const AWS_REGION = process.env.AWS_REGION
   const client = new CognitoIdentityProviderClient({
     region: AWS_REGION,
   })

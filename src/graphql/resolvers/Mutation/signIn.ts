@@ -3,19 +3,25 @@ import {
   InitiateAuthCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
-import { GraphQLError } from 'graphql'
-import Yup from 'yup'
+import yup from 'yup'
+import {
+  AWS_REGION,
+  COGNITO_CLIENT_ID,
+  COGNITO_CLIENT_SECRET,
+} from '../../../constants/index.js'
 
-const signInSchema = Yup.object({
-  email: Yup.string()
+const signInSchema = yup.object({
+  email: yup
+    .string()
     .email()
     .required(),
-  password: Yup.string()
+  password: yup
+    .string()
     .min(8)
     .required(),
 })
 
-type SignInArgs = Yup.InferType<typeof signInSchema>
+type SignInArgs = yup.InferType<typeof signInSchema>
 
 const signIn = async (_: any, { email, password }: SignInArgs) => {
   try {
@@ -25,17 +31,18 @@ const signIn = async (_: any, { email, password }: SignInArgs) => {
     throw new Error(error)
   }
 
-  const AWS_REGION = process.env.AWS_REGION
-  const CLIENT_ID = process.env.COGNITO_CLIENT_ID
-  const CLIENT_SECRET = process.env.COGNITO_CLIENT_SECRET
   const client = new CognitoIdentityProviderClient({
     region: AWS_REGION,
   })
-  const secretHash = generateSecretHash(CLIENT_ID, CLIENT_SECRET, email)
+  const secretHash = generateSecretHash(
+    COGNITO_CLIENT_ID,
+    COGNITO_CLIENT_SECRET,
+    email
+  )
 
   const signInCommand = new InitiateAuthCommand({
     AuthFlow: 'USER_PASSWORD_AUTH',
-    ClientId: CLIENT_ID,
+    ClientId: COGNITO_CLIENT_ID,
     AuthParameters: {
       USERNAME: email,
       PASSWORD: password,

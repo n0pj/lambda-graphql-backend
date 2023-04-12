@@ -172,6 +172,7 @@ export type Mutation = {
   readonly addMediaToFavorites?: Maybe<Favorite>;
   /** メディアにタグを追加する */
   readonly addTagToMedia?: Maybe<MediaTag>;
+  readonly confirmSignUp?: Maybe<Scalars['Boolean']>;
   /** 新しいコメントを作成する */
   readonly createComment?: Maybe<Comment>;
   /** 新しいメディアを作成する */
@@ -184,6 +185,7 @@ export type Mutation = {
   readonly createUser?: Maybe<User>;
   /** メディアからお気に入りを削除する */
   readonly removeMediaFromFavorites?: Maybe<Favorite>;
+  readonly resendConfirmationCode?: Maybe<Scalars['Boolean']>;
   readonly signIn?: Maybe<AuthenticationResult>;
   readonly signOut?: Maybe<Scalars['Boolean']>;
   readonly signUp?: Maybe<User>;
@@ -245,6 +247,12 @@ export type MutationAddTagToMediaArgs = {
 };
 
 
+export type MutationConfirmSignUpArgs = {
+  code: Scalars['String'];
+  email: Scalars['String'];
+};
+
+
 export type MutationCreateCommentArgs = {
   content: Scalars['String'];
   mediaUuid: Scalars['String'];
@@ -283,6 +291,11 @@ export type MutationCreateUserArgs = {
 
 export type MutationRemoveMediaFromFavoritesArgs = {
   favoriteUuid: Scalars['String'];
+};
+
+
+export type MutationResendConfirmationCodeArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -671,12 +684,14 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addEvaluationToTag?: Resolver<Maybe<ResolversTypes['TagEvaluation']>, ParentType, ContextType, RequireFields<MutationAddEvaluationToTagArgs, 'evaluationUuid' | 'tagUuid' | 'userUuid'>>;
   addMediaToFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationAddMediaToFavoritesArgs, 'mediaUuid' | 'userUuid'>>;
   addTagToMedia?: Resolver<Maybe<ResolversTypes['MediaTag']>, ParentType, ContextType, RequireFields<MutationAddTagToMediaArgs, 'mediaUuid' | 'tagUuid' | 'userUuid'>>;
+  confirmSignUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmSignUpArgs, 'code' | 'email'>>;
   createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content' | 'mediaUuid' | 'userUuid'>>;
   createMedia?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreateMediaArgs, 'contentType' | 'file' | 'filename' | 'height' | 'ratio' | 'userUuid' | 'width'>>;
   createPost?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreatePostArgs, 'userUuid'>>;
   createTag?: Resolver<Maybe<ResolversTypes['Tag']>, ParentType, ContextType, RequireFields<MutationCreateTagArgs, 'name' | 'userUuid'>>;
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'username'>>;
   removeMediaFromFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationRemoveMediaFromFavoritesArgs, 'favoriteUuid'>>;
+  resendConfirmationCode?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationResendConfirmationCodeArgs, 'email'>>;
   signIn?: Resolver<Maybe<ResolversTypes['AuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'email' | 'password'>>;
   signOut?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignOutArgs, 'accessToken'>>;
   signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;

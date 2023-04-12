@@ -14,8 +14,10 @@ import addMediaToFavorites from './addMediaToFavorite.js'
 import removeMediaFromFavorites from './removeMediaFromFavorites.js'
 import addCommentToMedia from './addCommentToMedia.js'
 import addCommentToComment from './addCommentToComment.js'
-import signIn from './signIn.js'
 import signUp from './signUp.js'
+import resendConfirmationCode from './resendConfirmationCode.js'
+import confirmSignUp from './confirmSignUp.js'
+import signIn from './signIn.js'
 import signOut from './signOut.js'
 
 const prisma = new PrismaClient()
@@ -39,6 +41,8 @@ const Mutation = {
   addCommentToMedia,
   addCommentToComment,
   signUp,
+  resendConfirmationCode,
+  confirmSignUp,
   signIn,
   signOut,
 }
