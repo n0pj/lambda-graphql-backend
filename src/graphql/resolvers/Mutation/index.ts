@@ -1,5 +1,3 @@
-import { PrismaClient } from '@prisma/client/index.js'
-
 import createUser from './createUser.js'
 import createPost from './createPost.js'
 import createMedia from './createMedia.js'
@@ -17,10 +15,10 @@ import addCommentToComment from './addCommentToComment.js'
 import signUp from './signUp.js'
 import resendConfirmationCode from './resendConfirmationCode.js'
 import confirmSignUp from './confirmSignUp.js'
+import changeUserDetails from './changeUserDetails.js'
+import verifyEmail from './verifyEmail.js'
 import signIn from './signIn.js'
 import signOut from './signOut.js'
-
-const prisma = new PrismaClient()
 
 /**
  * Mutation resolvers
@@ -43,6 +41,8 @@ const Mutation = {
   signUp,
   resendConfirmationCode,
   confirmSignUp,
+  changeUserDetails,
+  verifyEmail,
   signIn,
   signOut,
 }

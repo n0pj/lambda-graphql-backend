@@ -162,6 +162,7 @@ export type Mutation = {
   readonly addMediaToFavorites?: Maybe<Favorite>;
   /** メディアにタグを追加する */
   readonly addTagToMedia?: Maybe<MediaTag>;
+  readonly changeUserDetails?: Maybe<Scalars['Boolean']>;
   readonly confirmSignUp?: Maybe<Scalars['Boolean']>;
   /** 新しいコメントを作成する */
   readonly createComment?: Maybe<Comment>;
@@ -179,6 +180,7 @@ export type Mutation = {
   readonly signIn?: Maybe<ResAuthenticationResult>;
   readonly signOut?: Maybe<Scalars['Boolean']>;
   readonly signUp?: Maybe<User>;
+  readonly verifyEmail?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -234,6 +236,12 @@ export type MutationAddTagToMediaArgs = {
   mediaUuid: Scalars['String'];
   tagUuid: Scalars['String'];
   userUuid: Scalars['String'];
+};
+
+
+export type MutationChangeUserDetailsArgs = {
+  accessToken: Scalars['String'];
+  newEmail?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -304,6 +312,14 @@ export type MutationSignUpArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+
+export type MutationVerifyEmailArgs = {
+  accessToken: Scalars['String'];
+  beforeEmail: Scalars['String'];
+  code: Scalars['String'];
+  newEmail: Scalars['String'];
 };
 
 export type Post = {
@@ -674,6 +690,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addEvaluationToTag?: Resolver<Maybe<ResolversTypes['TagEvaluation']>, ParentType, ContextType, RequireFields<MutationAddEvaluationToTagArgs, 'evaluationUuid' | 'tagUuid' | 'userUuid'>>;
   addMediaToFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationAddMediaToFavoritesArgs, 'mediaUuid' | 'userUuid'>>;
   addTagToMedia?: Resolver<Maybe<ResolversTypes['MediaTag']>, ParentType, ContextType, RequireFields<MutationAddTagToMediaArgs, 'mediaUuid' | 'tagUuid' | 'userUuid'>>;
+  changeUserDetails?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeUserDetailsArgs, 'accessToken'>>;
   confirmSignUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmSignUpArgs, 'code' | 'uuid'>>;
   createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content' | 'mediaUuid' | 'userUuid'>>;
   createMedia?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreateMediaArgs, 'contentType' | 'file' | 'filename' | 'height' | 'ratio' | 'userUuid' | 'width'>>;
@@ -685,6 +702,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   signIn?: Resolver<Maybe<ResolversTypes['ResAuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'password' | 'signInIdentifier'>>;
   signOut?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignOutArgs, 'accessToken'>>;
   signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
+  verifyEmail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationVerifyEmailArgs, 'accessToken' | 'beforeEmail' | 'code' | 'newEmail'>>;
 };
 
 export type PostResolvers<ContextType = any, ParentType extends ResolversParentTypes['Post'] = ResolversParentTypes['Post']> = {

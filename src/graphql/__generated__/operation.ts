@@ -178,6 +178,7 @@ export type Mutation = {
   addMediaToFavorites?: Maybe<Favorite>;
   /** メディアにタグを追加する */
   addTagToMedia?: Maybe<MediaTag>;
+  changeUserDetails?: Maybe<Scalars['Boolean']>;
   confirmSignUp?: Maybe<Scalars['Boolean']>;
   /** 新しいコメントを作成する */
   createComment?: Maybe<Comment>;
@@ -195,6 +196,7 @@ export type Mutation = {
   signIn?: Maybe<ResAuthenticationResult>;
   signOut?: Maybe<Scalars['Boolean']>;
   signUp?: Maybe<User>;
+  verifyEmail?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -250,6 +252,12 @@ export type MutationAddTagToMediaArgs = {
   mediaUuid: Scalars['String'];
   tagUuid: Scalars['String'];
   userUuid: Scalars['String'];
+};
+
+
+export type MutationChangeUserDetailsArgs = {
+  accessToken: Scalars['String'];
+  newEmail?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -320,6 +328,14 @@ export type MutationSignUpArgs = {
   email: Scalars['String'];
   password: Scalars['String'];
   username: Scalars['String'];
+};
+
+
+export type MutationVerifyEmailArgs = {
+  accessToken: Scalars['String'];
+  beforeEmail: Scalars['String'];
+  code: Scalars['String'];
+  newEmail: Scalars['String'];
 };
 
 export type Post = {

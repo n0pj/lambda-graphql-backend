@@ -1,6 +1,6 @@
 import {
   CognitoIdentityProviderClient,
-  InitiateAuthCommand,
+  UpdateUserAttributesCommand,
 } from '@aws-sdk/client-cognito-identity-provider'
 import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
 import yup from 'yup'
@@ -9,22 +9,21 @@ import {
   COGNITO_CLIENT_ID,
   COGNITO_CLIENT_SECRET,
 } from '../../../constants/index.js'
-import { ResAuthenticationResult } from 'src/graphql/__generated__/schema.js'
 
 const changeUserDetailsSchema = yup.object({
-  email: yup.string().email().required(),
-  password: yup.string().min(8).required(),
+  accessToken: yup.string().required(),
+  newEmail: yup.string().email().required(),
 })
 
 type ChangeUserDetailsSchema = yup.InferType<typeof changeUserDetailsSchema>
 
 const changeUserDetails = async (
   _: any,
-  { email, password }: ChangeUserDetailsSchema
+  { accessToken, newEmail }: ChangeUserDetailsSchema
 ) => {
   try {
     await changeUserDetailsSchema.validate(
-      { email, password },
+      { accessToken, newEmail },
       { abortEarly: false }
     )
   } catch (error) {
@@ -35,13 +34,26 @@ const changeUserDetails = async (
   const client = new CognitoIdentityProviderClient({
     region: AWS_REGION,
   })
-  const secretHash = generateSecretHash(
-    COGNITO_CLIENT_ID,
-    COGNITO_CLIENT_SECRET,
-    email
-  )
 
-  //   return authenticationResult
+  const updateUserAttributesCommand = new UpdateUserAttributesCommand({
+    AccessToken: accessToken,
+    UserAttributes: [
+      {
+        Name: 'email',
+        Value: newEmail,
+      },
+    ],
+  })
+
+  try {
+    const data = await client.send(updateUserAttributesCommand)
+    console.log('data:', data)
+  } catch (error) {
+    console.log('error:', error)
+    throw new Error('Error updating user attributes. Please try again later.')
+  }
+
+  return true
 }
 
 export default changeUserDetails
