@@ -2,6 +2,7 @@ import { PrismaClient } from '@prisma/client/index.js'
 import {
   CognitoIdentityProviderClient,
   InitiateAuthCommand,
+  UserNotConfirmedException,
 } from '@aws-sdk/client-cognito-identity-provider'
 import generateSecretHash from '../../../libs/auth/generateSecretHash.js'
 import yup from 'yup'
@@ -11,16 +12,15 @@ import {
   COGNITO_CLIENT_SECRET,
 } from '../../../constants/index.js'
 import { ResAuthenticationResult } from 'src/graphql/__generated__/schema.js'
+import { GraphQLError } from 'graphql'
+import { ErrorCode } from '../../../constants/errors.js'
 
 const prisma = new PrismaClient()
 
 const signInSchema = yup.object({
   // username or email
   signInIdentifier: yup.string().required(),
-  password: yup
-    .string()
-    .min(8)
-    .required(),
+  password: yup.string().min(8).required(),
 })
 
 type SignInArgs = yup.InferType<typeof signInSchema>
@@ -33,7 +33,7 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     )
   } catch (error) {
     console.log('Error validating signIn input:', error)
-    throw new Error(error)
+    throw new GraphQLError(error)
   }
 
   // メールアドレスかユーザー名かを判定する
@@ -50,7 +50,7 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     })
 
     if (!user) {
-      throw new Error('Error signing in user. Please try again later.')
+      throw new GraphQLError('Error signing in user. Please try again later.')
     }
 
     uuid = user.uuid
@@ -65,7 +65,7 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     })
 
     if (!user) {
-      throw new Error('Error signing in user. Please try again later.')
+      throw new GraphQLError('Error signing in user. Please try again later.')
     }
 
     uuid = user.uuid
@@ -130,9 +130,18 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     // console.log(response)
     // console.log('User signed in successfully')
   } catch (error) {
-    // console.log('Error signing in user:', error)
-
-    throw new Error('Error signing in user. Please try again later.')
+    if (error instanceof UserNotConfirmedException) {
+      console.log('User not confirmed:', error)
+      // ユーザーが確認されていない場合の処理
+      throw new GraphQLError('User not confirmed', {
+        extensions: {
+          code: ErrorCode.UserNotConfirmedException,
+        },
+      })
+    } else {
+      console.log('Error signing in user:', error)
+      throw new GraphQLError('Error signing in user. Please try again later.')
+    }
   }
 
   return authenticationResult
