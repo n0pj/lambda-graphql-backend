@@ -180,6 +180,7 @@ export type Mutation = {
   addTagToMedia?: Maybe<MediaTag>;
   changeEmail?: Maybe<Scalars['Boolean']>;
   changeUserDetail?: Maybe<Scalars['Boolean']>;
+  confirmResetPassword?: Maybe<Scalars['Boolean']>;
   confirmSignUp?: Maybe<Scalars['Boolean']>;
   /** 新しいコメントを作成する */
   createComment?: Maybe<Comment>;
@@ -194,6 +195,7 @@ export type Mutation = {
   /** メディアからお気に入りを削除する */
   removeMediaFromFavorites?: Maybe<Favorite>;
   resendConfirmationCode?: Maybe<Scalars['Boolean']>;
+  resetPassword?: Maybe<Scalars['Boolean']>;
   signIn?: Maybe<ResAuthenticationResult>;
   signOut?: Maybe<Scalars['Boolean']>;
   signUp?: Maybe<User>;
@@ -268,6 +270,13 @@ export type MutationChangeUserDetailArgs = {
 };
 
 
+export type MutationConfirmResetPasswordArgs = {
+  code: Scalars['String'];
+  email: Scalars['String'];
+  newPassword: Scalars['String'];
+};
+
+
 export type MutationConfirmSignUpArgs = {
   code: Scalars['String'];
   uuid: Scalars['String'];
@@ -317,6 +326,11 @@ export type MutationRemoveMediaFromFavoritesArgs = {
 
 export type MutationResendConfirmationCodeArgs = {
   uuid: Scalars['String'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  email: Scalars['String'];
 };
 
 

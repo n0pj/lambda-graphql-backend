@@ -164,6 +164,7 @@ export type Mutation = {
   readonly addTagToMedia?: Maybe<MediaTag>;
   readonly changeEmail?: Maybe<Scalars['Boolean']>;
   readonly changeUserDetail?: Maybe<Scalars['Boolean']>;
+  readonly confirmResetPassword?: Maybe<Scalars['Boolean']>;
   readonly confirmSignUp?: Maybe<Scalars['Boolean']>;
   /** 新しいコメントを作成する */
   readonly createComment?: Maybe<Comment>;
@@ -178,6 +179,7 @@ export type Mutation = {
   /** メディアからお気に入りを削除する */
   readonly removeMediaFromFavorites?: Maybe<Favorite>;
   readonly resendConfirmationCode?: Maybe<Scalars['Boolean']>;
+  readonly resetPassword?: Maybe<Scalars['Boolean']>;
   readonly signIn?: Maybe<ResAuthenticationResult>;
   readonly signOut?: Maybe<Scalars['Boolean']>;
   readonly signUp?: Maybe<User>;
@@ -252,6 +254,13 @@ export type MutationChangeUserDetailArgs = {
 };
 
 
+export type MutationConfirmResetPasswordArgs = {
+  code: Scalars['String'];
+  email: Scalars['String'];
+  newPassword: Scalars['String'];
+};
+
+
 export type MutationConfirmSignUpArgs = {
   code: Scalars['String'];
   uuid: Scalars['String'];
@@ -301,6 +310,11 @@ export type MutationRemoveMediaFromFavoritesArgs = {
 
 export type MutationResendConfirmationCodeArgs = {
   uuid: Scalars['String'];
+};
+
+
+export type MutationResetPasswordArgs = {
+  email: Scalars['String'];
 };
 
 
@@ -699,6 +713,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addTagToMedia?: Resolver<Maybe<ResolversTypes['MediaTag']>, ParentType, ContextType, RequireFields<MutationAddTagToMediaArgs, 'mediaUuid' | 'tagUuid' | 'userUuid'>>;
   changeEmail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeEmailArgs, 'accessToken'>>;
   changeUserDetail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeUserDetailArgs, 'accessToken'>>;
+  confirmResetPassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmResetPasswordArgs, 'code' | 'email' | 'newPassword'>>;
   confirmSignUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmSignUpArgs, 'code' | 'uuid'>>;
   createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content' | 'mediaUuid' | 'userUuid'>>;
   createMedia?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreateMediaArgs, 'contentType' | 'file' | 'filename' | 'height' | 'ratio' | 'userUuid' | 'width'>>;
@@ -707,6 +722,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createUser?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationCreateUserArgs, 'username'>>;
   removeMediaFromFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationRemoveMediaFromFavoritesArgs, 'favoriteUuid'>>;
   resendConfirmationCode?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationResendConfirmationCodeArgs, 'uuid'>>;
+  resetPassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'email'>>;
   signIn?: Resolver<Maybe<ResolversTypes['ResAuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'password' | 'signInIdentifier'>>;
   signOut?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignOutArgs, 'accessToken'>>;
   signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;

@@ -144,6 +144,7 @@ type Mutation {
   addTagToMedia(mediaUuid: String!, tagUuid: String!, userUuid: String!): MediaTag
   changeEmail(accessToken: String!, newEmail: String): Boolean
   changeUserDetail(accessToken: String!, newEmail: String): Boolean
+  confirmResetPassword(code: String!, email: String!, newPassword: String!): Boolean
   confirmSignUp(code: String!, uuid: String!): Boolean
 
   """新しいコメントを作成する"""
@@ -164,6 +165,7 @@ type Mutation {
   """メディアからお気に入りを削除する"""
   removeMediaFromFavorites(favoriteUuid: String!): Favorite
   resendConfirmationCode(uuid: String!): Boolean
+  resetPassword(email: String!): Boolean
   signIn(password: String!, signInIdentifier: String!): ResAuthenticationResult
   signOut(accessToken: String!): Boolean
   signUp(email: String!, password: String!, username: String!): User

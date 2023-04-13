@@ -129,4 +129,12 @@ type Mutation {
   ): Boolean
 
   signOut(accessToken: String!): Boolean
+
+  resetPassword(email: String!): Boolean
+
+  confirmResetPassword(
+    email: String!
+    code: String!
+    newPassword: String!
+  ): Boolean
 }

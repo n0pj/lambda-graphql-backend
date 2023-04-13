@@ -18,6 +18,8 @@ import confirmSignUp from './confirmSignUp.js'
 import changeEmail from './changeEmail.js'
 import changeUserDetail from './changeUserDetail.js'
 import verifyEmail from './verifyEmail.js'
+import resetPassword from './resetPassword.js'
+import confirmResetPassword from './confirmResetPassword.js'
 import signIn from './signIn.js'
 import signOut from './signOut.js'
 
@@ -44,7 +46,9 @@ const Mutation = {
   confirmSignUp,
   changeEmail,
   changeUserDetail,
+  confirmResetPassword,
   verifyEmail,
+  resetPassword,
   signIn,
   signOut,
 }
