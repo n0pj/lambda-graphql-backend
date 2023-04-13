@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client/index.js'
+import ApplicationError, {
+  ErrorCode,
+} from '../../../libs/ApplicationError/index.js'
 
 const prisma = new PrismaClient()
 
@@ -17,7 +20,10 @@ const addCommentToComment = async (
   })
 
   if (!comment) {
-    throw new Error(`Comment with uuid ${commentUuid} not found`)
+    throw new ApplicationError(
+      `Comment with uuid ${commentUuid} not found`,
+      ErrorCode.NotFoundError
+    )
   }
 
   const user = await prisma.user.findUnique({
@@ -25,7 +31,10 @@ const addCommentToComment = async (
   })
 
   if (!user) {
-    throw new Error(`User with uuid ${userUuid} not found`)
+    throw new ApplicationError(
+      `User with uuid ${userUuid} not found`,
+      ErrorCode.NotFoundError
+    )
   }
 
   const subComment = await prisma.comment.create({

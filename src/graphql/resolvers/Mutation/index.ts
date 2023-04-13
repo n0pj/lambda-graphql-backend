@@ -15,7 +15,8 @@ import addCommentToComment from './addCommentToComment.js'
 import signUp from './signUp.js'
 import resendConfirmationCode from './resendConfirmationCode.js'
 import confirmSignUp from './confirmSignUp.js'
-import changeUserDetails from './changeUserDetails.js'
+import changeEmail from './changeEmail.js'
+import changeUserDetail from './changeUserDetail.js'
 import verifyEmail from './verifyEmail.js'
 import signIn from './signIn.js'
 import signOut from './signOut.js'
@@ -41,7 +42,8 @@ const Mutation = {
   signUp,
   resendConfirmationCode,
   confirmSignUp,
-  changeUserDetails,
+  changeEmail,
+  changeUserDetail,
   verifyEmail,
   signIn,
   signOut,

@@ -10,6 +10,9 @@ import {
   COGNITO_CLIENT_ID,
   COGNITO_CLIENT_SECRET,
 } from '../../../constants/index.js'
+import ApplicationError, {
+  ErrorCode,
+} from '../../../libs/ApplicationError/index.js'
 
 const prisma = new PrismaClient()
 
@@ -30,7 +33,11 @@ const resendConfirmationCode = async (
     await resendConfirmationCodeSchema.validate({ uuid })
   } catch (error) {
     console.log('Error validating resendConfirmationCode input:', error)
-    throw new Error(error)
+    throw new ApplicationError(
+      'Error validating resendConfirmationCode input.',
+      ErrorCode.ValidationError,
+      error.inner
+    )
   }
 
   const client = new CognitoIdentityProviderClient({ region: AWS_REGION })
@@ -50,7 +57,10 @@ const resendConfirmationCode = async (
     console.log('response:', response)
   } catch (error) {
     console.log('Error confirming sign up:', error)
-    throw new Error('Error confirming sign up. Please try again later.')
+    throw new ApplicationError(
+      'Error confirming sign up.',
+      ErrorCode.InternalServerError
+    )
   }
 
   return true

@@ -12,8 +12,9 @@ import {
   COGNITO_CLIENT_SECRET,
 } from '../../../constants/index.js'
 import { ResAuthenticationResult } from 'src/graphql/__generated__/schema.js'
-import { GraphQLError } from 'graphql'
-import { ErrorCode } from '../../../constants/errors.js'
+import ApplicationError, {
+  ErrorCode,
+} from '../../../libs/ApplicationError/index.js'
 
 const prisma = new PrismaClient()
 
@@ -33,7 +34,11 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     )
   } catch (error) {
     console.log('Error validating signIn input:', error)
-    throw new GraphQLError(error)
+    throw new ApplicationError(
+      'Error validating signIn input.',
+      ErrorCode.ValidationError,
+      error.inner
+    )
   }
 
   // メールアドレスかユーザー名かを判定する
@@ -50,7 +55,10 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     })
 
     if (!user) {
-      throw new GraphQLError('Error signing in user. Please try again later.')
+      throw new ApplicationError(
+        'Error signing in user. Please try again later.',
+        ErrorCode.NotFoundError
+      )
     }
 
     uuid = user.uuid
@@ -65,7 +73,10 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     })
 
     if (!user) {
-      throw new GraphQLError('Error signing in user. Please try again later.')
+      throw new ApplicationError(
+        'Error signing in user. Please try again later.',
+        ErrorCode.NotFoundError
+      )
     }
 
     uuid = user.uuid
@@ -133,14 +144,16 @@ const signIn = async (_: any, { signInIdentifier, password }: SignInArgs) => {
     if (error instanceof UserNotConfirmedException) {
       console.log('User not confirmed:', error)
       // ユーザーが確認されていない場合の処理
-      throw new GraphQLError('User not confirmed', {
-        extensions: {
-          code: ErrorCode.UserNotConfirmedException,
-        },
-      })
+      throw new ApplicationError(
+        'User not confirmed. Please confirm your email address.',
+        ErrorCode.UserNotConfirmedException
+      )
     } else {
       console.log('Error signing in user:', error)
-      throw new GraphQLError('Error signing in user. Please try again later.')
+      throw new ApplicationError(
+        'Error signing in user. Please try again later.',
+        ErrorCode.UnknownError
+      )
     }
   }
 

@@ -142,7 +142,8 @@ type Mutation {
 
   """メディアにタグを追加する"""
   addTagToMedia(mediaUuid: String!, tagUuid: String!, userUuid: String!): MediaTag
-  changeUserDetails(accessToken: String!, newEmail: String): Boolean
+  changeEmail(accessToken: String!, newEmail: String): Boolean
+  changeUserDetail(accessToken: String!, newEmail: String): Boolean
   confirmSignUp(code: String!, uuid: String!): Boolean
 
   """新しいコメントを作成する"""

@@ -3,6 +3,9 @@ import {
   CognitoIdentityProviderClient,
 } from '@aws-sdk/client-cognito-identity-provider'
 import { AWS_REGION } from '../../../constants/index.js'
+import ApplicationError, {
+  ErrorCode,
+} from '../../../libs/ApplicationError/index.js'
 
 interface SignoutArgs {
   accessToken: string
@@ -31,10 +34,11 @@ const signOut = async (_: any, { accessToken }: SignoutArgs) => {
     //     totalRetryDelay: 0
     //   }
     // }
-    console.log('User signed out successfully:', response)
   } catch (error) {
-    console.error('Error signing out user:', error)
-    return error
+    throw new ApplicationError(
+      'Error signing out user. Please try again later.',
+      ErrorCode.InternalServerError
+    )
   }
 
   return true

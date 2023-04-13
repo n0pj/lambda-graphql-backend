@@ -1,4 +1,7 @@
 import { PrismaClient } from '@prisma/client/index.js'
+import ApplicationError, {
+  ErrorCode,
+} from '../../../libs/ApplicationError/index.js'
 
 const prisma = new PrismaClient()
 
@@ -17,7 +20,10 @@ const addCommentToMedia = async (
   })
 
   if (!media) {
-    throw new Error(`Media with uuid ${mediaUuid} not found`)
+    throw new ApplicationError(
+      `Media with uuid ${mediaUuid} not found`,
+      ErrorCode.NotFoundError
+    )
   }
 
   const user = await prisma.user.findUnique({
@@ -25,7 +31,10 @@ const addCommentToMedia = async (
   })
 
   if (!user) {
-    throw new Error(`User with uuid ${userUuid} not found`)
+    throw new ApplicationError(
+      `User with uuid ${userUuid} not found`,
+      ErrorCode.NotFoundError
+    )
   }
 
   const comment = await prisma.comment.create({

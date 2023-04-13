@@ -162,7 +162,8 @@ export type Mutation = {
   readonly addMediaToFavorites?: Maybe<Favorite>;
   /** メディアにタグを追加する */
   readonly addTagToMedia?: Maybe<MediaTag>;
-  readonly changeUserDetails?: Maybe<Scalars['Boolean']>;
+  readonly changeEmail?: Maybe<Scalars['Boolean']>;
+  readonly changeUserDetail?: Maybe<Scalars['Boolean']>;
   readonly confirmSignUp?: Maybe<Scalars['Boolean']>;
   /** 新しいコメントを作成する */
   readonly createComment?: Maybe<Comment>;
@@ -239,7 +240,13 @@ export type MutationAddTagToMediaArgs = {
 };
 
 
-export type MutationChangeUserDetailsArgs = {
+export type MutationChangeEmailArgs = {
+  accessToken: Scalars['String'];
+  newEmail?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationChangeUserDetailArgs = {
   accessToken: Scalars['String'];
   newEmail?: InputMaybe<Scalars['String']>;
 };
@@ -690,7 +697,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addEvaluationToTag?: Resolver<Maybe<ResolversTypes['TagEvaluation']>, ParentType, ContextType, RequireFields<MutationAddEvaluationToTagArgs, 'evaluationUuid' | 'tagUuid' | 'userUuid'>>;
   addMediaToFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationAddMediaToFavoritesArgs, 'mediaUuid' | 'userUuid'>>;
   addTagToMedia?: Resolver<Maybe<ResolversTypes['MediaTag']>, ParentType, ContextType, RequireFields<MutationAddTagToMediaArgs, 'mediaUuid' | 'tagUuid' | 'userUuid'>>;
-  changeUserDetails?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeUserDetailsArgs, 'accessToken'>>;
+  changeEmail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeEmailArgs, 'accessToken'>>;
+  changeUserDetail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeUserDetailArgs, 'accessToken'>>;
   confirmSignUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmSignUpArgs, 'code' | 'uuid'>>;
   createComment?: Resolver<Maybe<ResolversTypes['Comment']>, ParentType, ContextType, RequireFields<MutationCreateCommentArgs, 'content' | 'mediaUuid' | 'userUuid'>>;
   createMedia?: Resolver<Maybe<ResolversTypes['Post']>, ParentType, ContextType, RequireFields<MutationCreateMediaArgs, 'contentType' | 'file' | 'filename' | 'height' | 'ratio' | 'userUuid' | 'width'>>;

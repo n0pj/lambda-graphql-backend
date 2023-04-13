@@ -117,7 +117,9 @@ type Mutation {
 
   confirmSignUp(uuid: String!, code: String!): Boolean
 
-  changeUserDetails(accessToken: String!, newEmail: String): Boolean
+  changeEmail(accessToken: String!, newEmail: String): Boolean
+
+  changeUserDetail(accessToken: String!, newEmail: String): Boolean
 
   verifyEmail(
     accessToken: String!

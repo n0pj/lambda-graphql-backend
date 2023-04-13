@@ -15,12 +15,15 @@ import {
   COGNITO_CLIENT_SECRET,
   COGNITO_USER_POOL_ID,
 } from '../../../constants/index.js'
+import ApplicationError, {
+  ErrorCode,
+} from '../../../libs/ApplicationError/index.js'
 
 const prisma = new PrismaClient()
 
 const signUpSchema = yup.object().shape({
   email: yup.string().email().required(),
-  username: yup.string().min(8).required(),
+  username: yup.string().min(4).required(),
   // パスワード要件
   // 少なくとも 1 つの数字を含む
   // 少なくとも 1 つの特殊文字を含む
@@ -38,10 +41,17 @@ type SignUpArgs = yup.InferType<typeof signUpSchema>
 
 const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
   try {
-    await signUpSchema.validate({ email, username, password })
+    await signUpSchema.validate(
+      { email, username, password },
+      { abortEarly: false }
+    )
   } catch (error) {
     console.log('Error validating signUp input:', error)
-    throw new Error(error)
+    throw new ApplicationError(
+      'Error validating signUp input.',
+      ErrorCode.ValidationError,
+      error.inner
+    )
   }
 
   const client = new CognitoIdentityProviderClient({ region: AWS_REGION })
@@ -68,7 +78,10 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
   const existingUser = await prisma.user.findUnique({ where: { username } })
 
   if (existingUser) {
-    throw new Error('Username is already taken.')
+    throw new ApplicationError(
+      'Username is already taken.',
+      ErrorCode.UsernameExistsException
+    )
   }
 
   // Check if user with given email already exists in Cognito
@@ -78,17 +91,21 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
   })
 
   try {
-    const existingUser = await client.send(getUserCommand)
+    const _ = await client.send(getUserCommand)
     console.log('User already exists in Cognito')
-    throw new Error('Email is already taken.')
+    throw new ApplicationError(
+      'Email is already taken.',
+      ErrorCode.EmailExistsException
+    )
   } catch (error) {
     // console.log('Error getting user from Cognito:', error)
     if (error.__type !== 'UserNotFoundException') {
       // console.log('Error getting user from Cognito:', error)
-      throw new Error('Failed to check if email is already taken.')
+      throw new ApplicationError(
+        'Error getting user.',
+        ErrorCode.InternalServerError
+      )
     }
-
-    console.log('User does not exist in Cognito')
   }
 
   // start transaction
@@ -118,10 +135,6 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
           Name: 'email',
           Value: email,
         },
-        {
-          Name: 'nickname',
-          Value: username,
-        },
       ],
     })
 
@@ -146,10 +159,11 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
 
     try {
       const _ = await client.send(signUpCommand)
-      console.log('User signed up successfully')
     } catch (error) {
-      console.log('Error signing up user:', error)
-      throw new Error('Failed to sign up user.')
+      throw new ApplicationError(
+        'Error signing up user.',
+        ErrorCode.InternalServerError
+      )
     }
 
     // try {

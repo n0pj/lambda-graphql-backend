@@ -5,6 +5,9 @@ import {
 } from '@aws-sdk/client-cognito-identity-provider'
 import yup from 'yup'
 import { AWS_REGION } from '../../../constants/index.js'
+import ApplicationError, {
+  ErrorCode,
+} from '../../../libs/ApplicationError/index.js'
 
 const prisma = new PrismaClient()
 
@@ -28,7 +31,11 @@ const verifyEmail = async (
     )
   } catch (error) {
     console.log('Error validating verifyEmail input:', error)
-    throw new Error(error)
+    throw new ApplicationError(
+      'Error validating verifyEmail input.',
+      ErrorCode.ValidationError,
+      error.innner
+    )
   }
 
   const client = new CognitoIdentityProviderClient({ region: AWS_REGION })
@@ -51,7 +58,10 @@ const verifyEmail = async (
       console.log('data:', data)
     } catch (error) {
       console.log('error:', error)
-      throw new Error('Error updating user attributes. Please try again later.')
+      throw new ApplicationError(
+        'Error updating user attributes. Please try again later.',
+        ErrorCode.InternalServerError
+      )
     }
   })
 
