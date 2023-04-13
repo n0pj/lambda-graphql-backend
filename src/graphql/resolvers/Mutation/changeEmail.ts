@@ -29,7 +29,7 @@ const changeEmail = async (
     throw new ApplicationError(
       'Error validating changeEmail input.',
       ErrorCode.ValidationError,
-      error.innner
+      error.inner
     )
   }
 

@@ -179,6 +179,7 @@ export type Mutation = {
   /** メディアにタグを追加する */
   addTagToMedia?: Maybe<MediaTag>;
   changeEmail?: Maybe<Scalars['Boolean']>;
+  changePassword?: Maybe<Scalars['Boolean']>;
   changeUserDetail?: Maybe<Scalars['Boolean']>;
   confirmResetPassword?: Maybe<Scalars['Boolean']>;
   confirmSignUp?: Maybe<Scalars['Boolean']>;
@@ -261,6 +262,13 @@ export type MutationAddTagToMediaArgs = {
 export type MutationChangeEmailArgs = {
   accessToken: Scalars['String'];
   newEmail?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationChangePasswordArgs = {
+  accessToken: Scalars['String'];
+  newPassword: Scalars['String'];
+  oldPassword: Scalars['String'];
 };
 
 

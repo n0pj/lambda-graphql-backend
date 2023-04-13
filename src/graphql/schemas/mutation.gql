@@ -137,4 +137,10 @@ type Mutation {
     code: String!
     newPassword: String!
   ): Boolean
+
+  changePassword(
+    accessToken: String!
+    oldPassword: String!
+    newPassword: String!
+  ): Boolean
 }

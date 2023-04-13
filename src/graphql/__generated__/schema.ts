@@ -163,6 +163,7 @@ export type Mutation = {
   /** メディアにタグを追加する */
   readonly addTagToMedia?: Maybe<MediaTag>;
   readonly changeEmail?: Maybe<Scalars['Boolean']>;
+  readonly changePassword?: Maybe<Scalars['Boolean']>;
   readonly changeUserDetail?: Maybe<Scalars['Boolean']>;
   readonly confirmResetPassword?: Maybe<Scalars['Boolean']>;
   readonly confirmSignUp?: Maybe<Scalars['Boolean']>;
@@ -245,6 +246,13 @@ export type MutationAddTagToMediaArgs = {
 export type MutationChangeEmailArgs = {
   accessToken: Scalars['String'];
   newEmail?: InputMaybe<Scalars['String']>;
+};
+
+
+export type MutationChangePasswordArgs = {
+  accessToken: Scalars['String'];
+  newPassword: Scalars['String'];
+  oldPassword: Scalars['String'];
 };
 
 
@@ -712,6 +720,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addMediaToFavorites?: Resolver<Maybe<ResolversTypes['Favorite']>, ParentType, ContextType, RequireFields<MutationAddMediaToFavoritesArgs, 'mediaUuid' | 'userUuid'>>;
   addTagToMedia?: Resolver<Maybe<ResolversTypes['MediaTag']>, ParentType, ContextType, RequireFields<MutationAddTagToMediaArgs, 'mediaUuid' | 'tagUuid' | 'userUuid'>>;
   changeEmail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeEmailArgs, 'accessToken'>>;
+  changePassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangePasswordArgs, 'accessToken' | 'newPassword' | 'oldPassword'>>;
   changeUserDetail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationChangeUserDetailArgs, 'accessToken'>>;
   confirmResetPassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmResetPasswordArgs, 'code' | 'email' | 'newPassword'>>;
   confirmSignUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationConfirmSignUpArgs, 'code' | 'uuid'>>;

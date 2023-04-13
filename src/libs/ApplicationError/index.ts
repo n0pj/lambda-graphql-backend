@@ -9,9 +9,12 @@ class ApplicationError extends GraphQLError {
   public errors: any[]
 
   constructor(message: string, code: ErrorCode, errors: any[] = []) {
-    super(message)
-    this.code = code
-    this.errors = errors
+    super(message, {
+      extensions: {
+        code,
+        errors,
+      },
+    })
   }
 }
 

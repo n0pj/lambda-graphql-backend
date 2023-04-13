@@ -20,6 +20,7 @@ import changeUserDetail from './changeUserDetail.js'
 import verifyEmail from './verifyEmail.js'
 import resetPassword from './resetPassword.js'
 import confirmResetPassword from './confirmResetPassword.js'
+import changePassword from './changePassword.js'
 import signIn from './signIn.js'
 import signOut from './signOut.js'
 
@@ -49,6 +50,7 @@ const Mutation = {
   confirmResetPassword,
   verifyEmail,
   resetPassword,
+  changePassword,
   signIn,
   signOut,
 }

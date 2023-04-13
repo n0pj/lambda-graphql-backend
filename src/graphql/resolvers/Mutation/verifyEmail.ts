@@ -34,7 +34,7 @@ const verifyEmail = async (
     throw new ApplicationError(
       'Error validating verifyEmail input.',
       ErrorCode.ValidationError,
-      error.innner
+      error.inner
     )
   }
 
