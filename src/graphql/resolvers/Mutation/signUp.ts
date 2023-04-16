@@ -87,7 +87,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
   // Check if user with given email already exists in Cognito
   const getUserCommand = new AdminGetUserCommand({
     UserPoolId: COGNITO_USER_POOL_ID,
-    Username: username,
+    Username: email,
   })
 
   try {
@@ -98,12 +98,16 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
       ErrorCode.EmailExistsException
     )
   } catch (error) {
-    // console.log('Error getting user from Cognito:', error)
+    console.log('Error getting user from Cognito:', error)
     if (error.__type !== 'UserNotFoundException') {
+      // ユーザーが見つからない場合は問題ない
       // console.log('Error getting user from Cognito:', error)
+    }
+
+    if (error.extensions.code === ErrorCode.EmailExistsException) {
       throw new ApplicationError(
-        'Error getting user.',
-        ErrorCode.InternalServerError
+        'Email is already taken.',
+        ErrorCode.EmailExistsException
       )
     }
   }
@@ -182,7 +186,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
     //   throw new Error(error)
     // }
 
-    return user
+    return true
   })
 }
 

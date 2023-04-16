@@ -183,7 +183,7 @@ export type Mutation = {
   readonly resetPassword?: Maybe<Scalars['Boolean']>;
   readonly signIn?: Maybe<ResAuthenticationResult>;
   readonly signOut?: Maybe<Scalars['Boolean']>;
-  readonly signUp?: Maybe<User>;
+  readonly signUp?: Maybe<Scalars['Boolean']>;
   readonly verifyEmail?: Maybe<Scalars['Boolean']>;
 };
 
@@ -734,7 +734,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   resetPassword?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationResetPasswordArgs, 'email'>>;
   signIn?: Resolver<Maybe<ResolversTypes['ResAuthenticationResult']>, ParentType, ContextType, RequireFields<MutationSignInArgs, 'password' | 'signInIdentifier'>>;
   signOut?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignOutArgs, 'accessToken'>>;
-  signUp?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
+  signUp?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationSignUpArgs, 'email' | 'password' | 'username'>>;
   verifyEmail?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationVerifyEmailArgs, 'accessToken' | 'beforeEmail' | 'code' | 'newEmail'>>;
 };
 
