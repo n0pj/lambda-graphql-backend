@@ -169,7 +169,7 @@ type Mutation {
   resetPassword(email: String!): Boolean
   signIn(password: String!, signInIdentifier: String!): ResAuthenticationResult
   signOut(accessToken: String!): Boolean
-  signUp(email: String!, password: String!, username: String!): Boolean
+  signUp(email: String!, password: String!, username: String!): User
   verifyEmail(accessToken: String!, beforeEmail: String!, code: String!, newEmail: String!): Boolean
 }
 

@@ -199,7 +199,7 @@ export type Mutation = {
   resetPassword?: Maybe<Scalars['Boolean']>;
   signIn?: Maybe<ResAuthenticationResult>;
   signOut?: Maybe<Scalars['Boolean']>;
-  signUp?: Maybe<Scalars['Boolean']>;
+  signUp?: Maybe<User>;
   verifyEmail?: Maybe<Scalars['Boolean']>;
 };
 

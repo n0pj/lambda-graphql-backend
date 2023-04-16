@@ -186,7 +186,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
     //   throw new Error(error)
     // }
 
-    return true
+    return user
   })
 }
 

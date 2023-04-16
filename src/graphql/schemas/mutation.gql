@@ -111,7 +111,7 @@ type Mutation {
 
   signIn(signInIdentifier: String!, password: String!): ResAuthenticationResult
 
-  signUp(username: String!, email: String!, password: String!): Boolean
+  signUp(username: String!, email: String!, password: String!): User
 
   resendConfirmationCode(uuid: String!): Boolean
 
