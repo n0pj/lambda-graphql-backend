@@ -104,7 +104,7 @@ const signUp = async (_: any, { email, username, password }: SignUpArgs) => {
       // console.log('Error getting user from Cognito:', error)
     }
 
-    if (error.extensions.code === ErrorCode.EmailExistsException) {
+    if (error?.extensions?.code === ErrorCode.EmailExistsException) {
       throw new ApplicationError(
         'Email is already taken.',
         ErrorCode.EmailExistsException
